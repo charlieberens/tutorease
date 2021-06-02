@@ -1,0 +1,4 @@
+{
+  "mongoURI":
+    "mongodb+srv://charlieberens:phrasethis94@questionserverdb.v57jf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+}

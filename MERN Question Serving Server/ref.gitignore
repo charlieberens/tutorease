@@ -1,0 +1,12 @@
+https://blog.logrocket.com/mern-stack-tutorial/
+
+Packages
+-bcryptjs: Password Hashing Function
+-body-parser: Parses post requests
+-express: Backend Framework
+-mongoose: Tool for interacting with MongoDB
+-validation: Used for validation
+-nodemon: Reloads server with code changes
+-config: Allows the definition of default parameters
+
+db-pw: phrasethis94
