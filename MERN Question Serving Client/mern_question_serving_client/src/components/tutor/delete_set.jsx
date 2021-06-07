@@ -20,7 +20,7 @@ class DeleteSet extends Component {
     render() {
         return (
 			<div>
-				<p>Are you sure you want to delete <em>{this.props.set.title}</em>?</p>
+				<p>Are you sure you want to delete <em>{this.props.set.title}</em>?<br/><strong>This action cannot be undone.</strong></p>
 				<div className="close-cancel-cont">
 					<button className="button-w" onClick={this.onSubmit}>Delete Set</button>
 					<button className="button-g" onClick={() => this.props.popupMethod(false)}>Cancel</button>
