@@ -91,7 +91,7 @@ class CreateQuestion extends Component {
             	{!this.state.mcq &&
 	            	<input type="text" name="create-question" className="create-question-frq" onChange={this.onChange}/>
             	}
-            	<input type="submit" className="button-a"/>
+            	<input type="submit" className="button-a" onClick={this.onSubmit}/>
             </form>
         );
     }

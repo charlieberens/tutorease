@@ -83,6 +83,7 @@ input[type=text]{
   outline: none;
   border-radius: 3px;
   font-size: 75%;
+  margin-bottom: 1em;
 }
 
 /* Popups */
@@ -114,6 +115,7 @@ input[type=text]{
   position: relative;
   display: grid;
   align-content: center;
+  margin: auto;
 }
 .popup-inner{
 
