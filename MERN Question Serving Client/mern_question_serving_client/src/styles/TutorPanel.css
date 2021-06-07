@@ -1,3 +1,14 @@
+/* Tutor Panel */
+.tutor-panel-main{
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5em;
+}
+.tutor-panel-inner{
+  max-width: 1000px;
+  text-align: center;
+}
+
 /* Create Question */
 .create-question-form{
   padding: 2rem;
@@ -19,15 +30,31 @@
 }
 
 /* Set List */
-.set-list{
-  display: grid;
+.set-list-header-cont{
+  display:inline-flex;
+  align-items: center;
+}
+.set-list-header-cont h1{
+  margin-bottom: 0;
+}
+.set-list-header-plus{
+  margin-left: 1em;
+  color: var(--primary-1);
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.set-list-inner{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .set-list-item{
   border: 1px solid var(--grey-80);
   border-radius: 5px;
   margin: 1em;
   width: 100%;
-  max-width: 300px;
+  max-width: 250px;
   position: relative;
   cursor: pointer;
 }
@@ -68,7 +95,8 @@
   top: calc(-1.5em + 3px);
   width: 160px;
   left: calc(1.5em + 35px);
-  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1)
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1);
+  z-index: 2;
 }
 .set-list-popup div{
   display: flex;
@@ -87,6 +115,8 @@
 .set-list-popup-icon{
   margin-right: .5em;
 }
+
+/* Individual Set */
 
 /* Set Dropdown */
 
@@ -147,7 +177,7 @@
   justify-content: center;
   align-items: center;
 
-  background: var(--purple-60);
+  background: var(--primary-1);
   color: white;
   border-radius: 7px;
   border-top-right-radius: 0;
@@ -160,7 +190,7 @@
   left: -1px;
 }
 .dropdown-set-list-create:hover{
-  background: var(--purple-55);
+  background: var(--primary-2);
 }
 .dropdown-set-list-create-plus{
   margin-left: .5em;

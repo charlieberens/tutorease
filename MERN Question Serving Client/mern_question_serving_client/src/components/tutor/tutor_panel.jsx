@@ -49,17 +49,21 @@ class TutorPanel extends Component {
 	           		<Link to={`${base_path}/students`}>Profile</Link>
 	           		<Link to={`${base_path}/sets`}>Sets</Link>
             	</nav>
-        		<Switch>
-        			<Route path={`${base_path}/sets/:id`}>
-    					<Set updateLoadSets={this.updateLoadSets}/>
-    				</Route>
-        			<Route path={`${base_path}/sets`}>
-    					<SetList updateLoadSets={this.updateLoadSets}/>
-    				</Route>
-    				<Route path={`${base_path}/students`}>
-    				    <CreateQuestion updateLoadSets={this.updateLoadSets}/>
-					</Route>
-        		</Switch>
+            	<div className="tutor-panel-main">
+            		<div className="tutor-panel-inner">
+		        		<Switch>
+		        			<Route path={`${base_path}/sets/:id`}>
+		    					<Set updateLoadSets={this.updateLoadSets}/>
+		    				</Route>
+		        			<Route path={`${base_path}/sets`}>
+		    					<SetList updateLoadSets={this.updateLoadSets}/>
+		    				</Route>
+		    				<Route path={`${base_path}/students`}>
+		    				    <CreateQuestion updateLoadSets={this.updateLoadSets}/>
+							</Route>
+		        		</Switch>
+	        		</div>
+        		</div>
             </div>
         );
     }

@@ -18,11 +18,6 @@ class CreateSet extends Component {
     }
 
     onSubmit = e => {
-        console.log({
-            title: this.state.title,
-            author_id: tutorID
-        })
-        console.log('e');
         e.preventDefault();
         axios.post('/api/tutors/sets/', {
             title: this.state.title,
@@ -30,8 +25,8 @@ class CreateSet extends Component {
         })
         .then(res => {
             // close popup
-            this.props.popupMethod(false, 0)
-            this.props.loadSets()
+            this.props.popupMethod(false);
+            this.props.loadSets();
         })
     }
 
@@ -41,7 +36,10 @@ class CreateSet extends Component {
         		<h2>Create Set</h2>
 	            <form className="create-set">
 	            	<input type="text" name="setTitle" placeholder="Set Name" class="create-set-set-name-input" onChange={this.onChange}/><br/>
-	            	<input type="submit" name="submitSet" className="button-a" onClick={this.onSubmit}/>
+	            	<div className="close-cancel-cont">
+                        <input type="submit" name="submitSet" className="button-a" onClick={this.onSubmit} value="Create"/>
+                        <button className="button-g" onClick={() => this.props.popupMethod(false)}>Cancel</button>
+                    </div>
 	            </form>
             </div>
         );

@@ -14,14 +14,12 @@ class Set extends Component {
       		questions: [],
       		popupOpen: false
     	}
-    }
 
-    componentDidMount() {
-        // this.loadSet(set_id);
+    	this.loadSet();
     }
     
-    loadSet = set_id => {
-    	axios.get(`/api/tutors/set/${tutor_id}/${set_id}`)
+    loadSet = () => {
+    	axios.get(`/api/tutors/set/${tutor_id}/${this.props.match.params.id}`)
         .then(res => {
             this.setState(res.data.set);
         }).catch(err => {
@@ -36,19 +34,15 @@ class Set extends Component {
     }
 
     render() {
-        const set_id = this.props.match.params.id;
-	    axios.get(`/api/tutors/set/${tutor_id}/${set_id}`)
-        .then(res => {
-            this.setState(res.data.set);
-            return (
-				<>
-					{this.state.questions != [] &&
-						(<div>
-							<h2>{this.state.title}</h2>
-							<p>This set doesn't have any questions. <a onClick={this.controlPopup(true)}>Make one?</a></p>
+		return (
+			<>
+				<div>
+					<h2>{this.state.title}</h2>
+					{!this.state.questions.length ?
+						(<div className="no-questions-cont">
+							<p>This set doesn't have any questions. <a className="inline-a" onClick={() => this.controlPopup(true)}>Make one</a>?</p>
 				    	</div>)
-					}
-					{true &&
+					:
 						(<div className="question-list">
 							{this.state.questions.map((question, index) => 
 								<div className="question-list-question question-list-item">
@@ -57,15 +51,12 @@ class Set extends Component {
 							)}
 						</div>)
 					}
-					
-					{this.state.popupOpen &&
-						<Popup popupMethod={this.controlPopup}><CreateQuestion set_id={this.props.match.params.id} popupMethod={this.controlPopup}/></Popup>
-					}
-				</>
-			);
-        }).catch(err => {
-        	console.log(err);
-        });
+				</div>
+				{this.state.popupOpen &&
+					<Popup popupMethod={this.controlPopup}><CreateQuestion set_id={this.props.match.params.id} popupMethod={this.controlPopup} loadMethod={this.loadSet}/></Popup>
+				}
+			</>
+		);
     }
 }
 

@@ -80,8 +80,6 @@ router.post('/questions/:tutor_id/:set_id', (req, res) => {
 	}
 
 	Tutor.findById(req.params.tutor_id, (err, tutor) => { //Finds Tutor from id and passes it into tutor var
-		console.log(tutor._id);
-		
 		// const set = tutor.sets.id(req.params.set_id);
 		tutor.sets.find(x => x._id == req.params.set_id).questions.push(question);
 
@@ -96,5 +94,24 @@ router.post('/questions/:tutor_id/:set_id', (req, res) => {
 	});
 });
 
+// Delete Set
+router.delete('/sets/:tutor_id/:set_id', (req, res) => {
+	const set_id = req.params.set_id;
+	const tutor_id = req.params.tutor_id;
+
+	Tutor.findById(tutor_id, (err, tutor) => { //Finds Tutor from id and passes it into tutor var
+		const filtered = tutor.sets.filter((x) => {
+			return x._id != set_id;
+		});
+		tutor.sets = filtered;
+		tutor.save() //Saves the set to the database
+		.then(data => {
+			res.sendStatus(200);
+		})
+		.catch(err => {
+			res.send(err);
+		});
+	});
+});
 
 module.exports = router;

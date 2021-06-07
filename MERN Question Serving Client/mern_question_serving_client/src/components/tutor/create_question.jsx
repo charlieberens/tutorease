@@ -69,6 +69,7 @@ class CreateQuestion extends Component {
         })
         .then(res => {
             this.props.popupMethod(false);
+            this.props.loadMethod();
         })
         .catch(err => {
             console.log(err)
@@ -92,19 +93,19 @@ class CreateQuestion extends Component {
 	            		{this.state.answers.slice(1).map((answer, index) => 
 	            			<div key={index} className="create-question-answer-outer">
 	            				<input type="text" name={'create-question-answer' + (index+1)} value={this.state.answers[index+1]} answerindex={index+1} className="create-question-answer" onChange={this.onChange}/>
-	            				<a className="remove-answers close" name="remove-answers" answerindex={index+1} onClick={this.onAnswerChange.bind(this,false,index+1)}><IoClose/></a>
+	            				<a className="remove-answers close" name="remove-answers" answerindex={index+1} onClick={() => this.onAnswerChange(false,index+1)}><IoClose/></a>
             				</div>)}
 
 	            		{/* Creates + button and removes it when max answers is reached */}
 	            		{this.state.answers.length < maxAnswers && 
-		        		<a className="add-answers" name="addAnswers" onClick={this.onAnswerChange.bind(this, true)}>+</a>}
+		        		<a className="add-answers" name="addAnswers" onClick={() => this.onAnswerChange(true)}>+</a>}
             		</div>
             	}
     			{/* Renders FRQ*/}
             	{!this.state.mcq &&
 	            	<input type="text" name="create-question" className="create-question-frq" onChange={this.onChange}/>
             	}
-            	<input type="submit" className="button-a" onClick={this.onSubmit.bind(this)}/>
+            	<input type="submit" className="button-a" onClick={this.onSubmit}/>
             </form>
         );
     }

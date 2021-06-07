@@ -63,9 +63,9 @@ class SetDropdown extends Component {
 	            <div className="dropdown-set-list dropdown-set-list-open">
 	            	<div className="dropdown-set-list-scroll-fix">
 		            	{this.state.sets.map((set, index) => 
-		            		<div key={'set' + index} className="dropdown-set-list-item dropdown-set-list-item-trad" index={index} onClick={this.changeSet.bind(this, index)}><span>{this.truncate(set, maxItemLen)}</span></div>
+		            		<div key={'set' + index} className="dropdown-set-list-item dropdown-set-list-item-trad" index={index} onClick={() => this.changeSet(index)}><span>{this.truncate(set, maxItemLen)}</span></div>
 		            	)}
-		            	<div className="dropdown-set-list-create dropdown-set-list-item" onClick={this.openPopup.bind(this)}>
+		            	<div className="dropdown-set-list-create dropdown-set-list-item" onClick={this.openPopup}>
 		            		<span>Create a new set</span><IoAddCircle className="dropdown-set-list-create-plus"/>
 		            	</div>
 	            	</div>

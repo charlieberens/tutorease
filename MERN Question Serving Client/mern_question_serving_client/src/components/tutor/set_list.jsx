@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { IoEllipsisVertical } from "react-icons/io5";
+import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
 import axios from 'axios';
 import SetListPopup from './set_list_popup'
+import CreateSet from './create_set'
+import DeleteSet from './delete_set'
+import Popup from '../popup'
 import * as dayjs from 'dayjs'
 
 import {
@@ -27,11 +30,14 @@ class SetList extends Component {
                 {
                     title: "Title",
                     date: "2021-06-04T00:15:09.750+00:00",
-                    _id: '60b971b99684d98b7c4ddf8e',
+                    id: '60b971b99684d98b7c4ddf8e',
                     dateF: "Jan. 1, 2021",
                     popupOpen: false
                 }
-            ]
+            ],
+            createSetPopupOpen: false,
+            deleteSetPopupOpen: false,
+            deleteSet: undefined
         }
         this.loadSets()
         // this.props.updateLoadSets(this.loadSets);
@@ -60,6 +66,18 @@ class SetList extends Component {
         });
     }
 
+    controlCreateSetPopup = bool => {
+        this.setState({createSetPopupOpen: bool});
+    }
+    controlDeleteSetPopup = bool => {
+        this.setState({deleteSetPopupOpen: bool});
+    }
+
+    deleteSet = (set) => {
+        this.setState({deleteSet: set});
+        this.controlDeleteSetPopup(true);
+    }
+
     truncate = (text, length) => {
         if(text.length < length){
             return text
@@ -74,7 +92,10 @@ class SetList extends Component {
     	}else{ // If Open Dropdown
 	        return (
 	            <div>
-                    <h2>Sets</h2>
+                    <div className="set-list-header-cont">
+                        <h1>Sets</h1>
+                        <IoAddCircle className="set-list-header-plus" onClick={() => this.controlCreateSetPopup(true) }/>
+                    </div>
                     <div className="set-list-inner">
     	            	{this.state.sets.map((set, index) => 
     	            		<div key={set.id} className="set-list-item" index={index}>
@@ -84,13 +105,19 @@ class SetList extends Component {
                                 </Link>
                                 <div className="set-list-item-controls">
                                     {set.popupOpen &&
-                                        <SetListPopup popupControl={this.controlSetPopup} index={index}/>
+                                        <SetListPopup popupControl={this.controlSetPopup} index={index} deleteSet={() => this.deleteSet({title: set.title, id: set.id})}/>
                                     }
-                                    <IoEllipsisVertical className="control-icon" onClick={this.controlSetPopup.bind(this,index, true)}/>
+                                    <IoEllipsisVertical className="control-icon" onClick={() => this.controlSetPopup(index, true)}/>
                                 </div>
                             </div>
     	            	)}
                     </div>
+                    {this.state.createSetPopupOpen &&
+                        <Popup popupMethod={this.controlCreateSetPopup}><CreateSet popupMethod={this.controlCreateSetPopup} loadSets={this.loadSets}/></Popup>
+                    }
+                    {this.state.deleteSetPopupOpen &&
+                        <Popup popupMethod={this.controlDeleteSetPopup}><DeleteSet popupMethod={this.controlDeleteSetPopup} loadSets={this.loadSets} set={this.state.deleteSet}/></Popup>
+                    }
 	            </div>
 	        );
     	}
