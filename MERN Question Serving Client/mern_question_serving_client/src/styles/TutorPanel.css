@@ -1,0 +1,172 @@
+/* Create Question */
+.create-question-form{
+  padding: 2rem;
+  width: 20em;
+  max-width: 100%;
+}
+.create-question-answer-outer{
+  display: flex;
+  align-items: center;
+}
+.create-question-answer{
+  margin-bottom: .25em;
+  width: 150px;
+  max-width: 100%;
+}
+.first-answer{
+  /*background: var(--green-80);*/
+  border: 1px solid var(--green-50);
+}
+
+/* Set List */
+.set-list{
+  display: grid;
+}
+.set-list-item{
+  border: 1px solid var(--grey-80);
+  border-radius: 5px;
+  margin: 1em;
+  width: 100%;
+  max-width: 300px;
+  position: relative;
+  cursor: pointer;
+}
+.set-list-item-content{
+  padding: 1.5em;
+  width: 100%;
+  display: block;
+}
+.set-list-item-content:hover{
+  background: var(--grey-95);
+}
+.set-list-item-title{
+  margin-bottom: 0;
+}
+.set-list-item-date{
+  font-size: 85%;
+}
+.set-list-item-controls{
+  position: absolute;
+  top: 1.25em;
+  right: 1.25em;
+}
+.set-list-item-controls .control-icon{
+  width: 27px;
+  height: 27px;
+  color: var(--grey-70);
+  padding: .25rem;
+  position: relative;
+}
+.set-list-item-controls .control-icon:hover{
+  color: var(--grey-20);
+}
+.set-list-popup{
+  background: white;
+  border: 1px solid var(--grey-90);
+  position: absolute;
+  border-radius: 5px;
+  top: calc(-1.5em + 3px);
+  width: 160px;
+  left: calc(1.5em + 35px);
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, .1)
+}
+.set-list-popup div{
+  display: flex;
+  align-items: center;
+  padding: .45em .5em;
+}
+.set-list-popup div:hover{
+  background: var(--grey-95);
+}
+.set-list-popup-edit{
+  color: #4a92f0;
+}
+.set-list-popup-delete{
+  color:  #f04a4a;
+}
+.set-list-popup-icon{
+  margin-right: .5em;
+}
+
+/* Set Dropdown */
+
+/* KEY
+.dropdown-set-list-item:  All items in the drop down;
+.dropdown-set-list-item-trad:  All sets in dropdown;
+.dropdown-set-list-choose:  Span with "Choose a set" text;
+.dropdown-set-list-create:  Create new set button;
+.dropdown-set-list-dropdown-top:  Top of closed dropdown;
+ */
+.dropdown-set-list{
+  border: 1px solid var(--grey-80);
+  border-radius: 7px;
+  cursor: pointer;
+  scrollbar-width: none;
+  position: relative;
+}
+.dropdown-set-list-open{
+  padding-bottom: calc(2*.65em + 30px); /*Accounts for Create new set button (.set-list-create*/
+}
+.dropdown-set-list-scroll-fix{
+    max-height: 200px;
+    overflow-y: auto;
+}
+.dropdown-set-list-scroll-fix::-webkit-scrollbar{
+  display: none;
+}
+.dropdown-set-list-dropdown-top{
+  display:  flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-set-list-dropdown-caret{
+  display: flex;
+  align-items: center;
+  padding-left: .25em;
+}
+.dropdown-set-list-choose{
+  font-style: italic;
+}
+.dropdown-set-list-dropdown-top:hover .dropdown-set-list-dropdown-caret, .dropdown-set-list-dropdown-top:hover .dropdown-set-list-choose{
+  color:  var(--grey-20);
+}
+.dropdown-set-list-item{
+  user-select: none;
+  padding: .5rem .75rem;
+  color:  var(--grey-70);
+}
+.dropdown-set-list-item-trad:hover{
+  background: var(--grey-95);
+  color: var(--grey-20);
+}
+.dropdown-set-list-chosen{
+  color: var(--grey-20);
+}
+.dropdown-set-list-create{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--purple-60);
+  color: white;
+  border-radius: 7px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  padding:  .65em .75em;
+
+  position: absolute;
+  width: calc(100% + 2px); /*This quirky hack makes the button cover the border*/
+  bottom: -1px;
+  left: -1px;
+}
+.dropdown-set-list-create:hover{
+  background: var(--purple-55);
+}
+.dropdown-set-list-create-plus{
+  margin-left: .5em;
+}
+
+/*Create Set*/
+.create-set-set-name-input{
+  margin-bottom: 1m em;
+}

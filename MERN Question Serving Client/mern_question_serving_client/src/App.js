@@ -1,33 +1,38 @@
 import logo from './logo.svg';
-import './App.css';
-
+import './styles/App.css';
 import { Component } from 'react'
-import Question from './components/question.jsx'
-import CreateQuestion from './components/create_question.jsx'
-import Popup from './components/popup.jsx'
+import TutorPanel from './components/tutor/tutor_panel'
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 class App extends Component {
   constructor(props){
-    super(props)
-    this.state = {
-      popupOpen: false,
-      popupInner: null
-    }
+    super(props);
   }
-  controlPopup = (open, popupChild) => { //Open argument = true for opening and false for closing
-    this.setState({
-      popupOpen: open,
-      popupInner: popupChild
-    });
-  }
+
   render(){  
+        // <Question />
     return (
       <div className="App">
-        <Question />
-        <CreateQuestion popupMethod={this.controlPopup}/>
-        {this.state.popupOpen &&
-          <Popup className="popup-cont" popupMethod={this.controlPopup}>{this.state.popupInner}</Popup>
-        }
+        {/* Popups */}
+        <Router>
+          <Link to="/">Home</Link>
+          <Link to="/tutors">Tutors</Link>
+
+          <Switch>
+            <Route path="/tutors">
+              <TutorPanel/>
+            </Route>
+            <Route path="/">
+              Home
+            </Route>
+          </Switch>
+        </Router>
       </div>
     );
   }

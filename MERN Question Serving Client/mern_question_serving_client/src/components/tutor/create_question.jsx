@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import Switch from "react-switch";
-import SetList from './set_list.jsx'
+import SetDropdown from './set_dropdown.jsx'
 import { IoClose } from "react-icons/io5";
+import axios from 'axios';
 
 const maxAnswers = 8;
 
+const tutor_id = '60b9708d0ace8e1c0c836b60';
 
 // This is the create question componenet
 // It is solely the form that allows for question creation.
@@ -59,14 +61,25 @@ class CreateQuestion extends Component {
 
     onSubmit = e => {
     	e.preventDefault();
-    	alert('submitted')
+
+        axios.post(`/api/tutors/questions/${tutor_id}/${this.props.set_id}/`, {
+            body: this.state.body,
+            answers: this.state.answers,
+            mcq: this.state.mcq
+        })
+        .then(res => {
+            this.props.popupMethod(false);
+        })
+        .catch(err => {
+            console.log(err)
+        });
     }
 
     render() {
         return (
             <form className="create-question-form">
               	<h1>Create Question</h1>
-                <SetList popupMethod={this.props.popupMethod}/>
+                {/* <SetDropdown popupMethod={this.props.popupMethod} updateLoadSets={this.props.updateLoadSets}/> */}
             	<textarea className="create-question-body" name="body" value={this.state.body} onChange={this.onChange}></textarea>
             	<Switch onChange={this.onSwitch} checked={this.state.mcq} />
                 {/*Renders MCQ*/}
@@ -91,7 +104,7 @@ class CreateQuestion extends Component {
             	{!this.state.mcq &&
 	            	<input type="text" name="create-question" className="create-question-frq" onChange={this.onChange}/>
             	}
-            	<input type="submit" className="button-a" onClick={this.onSubmit}/>
+            	<input type="submit" className="button-a" onClick={this.onSubmit.bind(this)}/>
             </form>
         );
     }

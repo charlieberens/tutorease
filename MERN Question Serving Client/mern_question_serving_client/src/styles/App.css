@@ -51,6 +51,10 @@ input, textarea, input::placeholder, textarea::placeholder{
   font-family: noto-sans, sans-serif;
   font-weight: 300;
 }
+a{
+  text-decoration: none;
+  color: inherit;
+}
 
 /* Default Styles */
 .button-a{
@@ -111,7 +115,6 @@ input[type=text]{
   border-radius: 5px;
   padding: 2rem;
   max-width: 100%;
-  width: 400px;
   position: relative;
   display: grid;
   align-content: center;

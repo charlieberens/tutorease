@@ -15,8 +15,8 @@ class Popup extends Component {
 		    <div className="popup-cont">
 		    	<div className="popup">
 			    	<div className="popup-inner">
-			    		<a className="popup-close close" onClick={this.closePopup}><IoClose/></a>
-	        			{this.props.children}
+			    		<div className="popup-close close" onClick={this.closePopup}><IoClose/></div>
+			    		{this.props.children}
 			    	</div>
 		    	</div>
 		        <div className="popup-close-capture" onClick={this.closePopup}></div>
