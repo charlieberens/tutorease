@@ -10,7 +10,7 @@ class DeleteSet extends Component {
 
     onSubmit = () => {
     	const set_id = this.props.set.id;
-    	axios.delete(`/api/tutors/sets/${tutor_id}/${set_id}`)
+    	axios.delete(`/api/tutors/sets/${set_id}`)
         .then(res => {
         	this.props.loadSets();
         	this.props.popupMethod(false);

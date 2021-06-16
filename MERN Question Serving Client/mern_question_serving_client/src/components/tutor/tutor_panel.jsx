@@ -11,10 +11,11 @@ import CreateQuestion from './create_question'
 import CreateSet from './create_set'
 import Popup from '../popup'
 import SetList from './set_list'
+import StudentList from './student_list'
 import Set from './set'
 import '../../styles/TutorPanel.css'
-
-const base_path = '/tutors'
+import AddStudent from './add_student'
+const base_path = '/app/tutor'
 
 class TutorPanel extends Component {
     constructor(props) {
@@ -45,10 +46,6 @@ class TutorPanel extends Component {
     render() {
         return (
             <div>
-            	<nav>
-	           		<Link to={`${base_path}/students`}>Profile</Link>
-	           		<Link to={`${base_path}/sets`}>Sets</Link>
-            	</nav>
             	<div className="tutor-panel-main">
             		<div className="tutor-panel-inner">
 		        		<Switch>
@@ -58,9 +55,18 @@ class TutorPanel extends Component {
 		        			<Route path={`${base_path}/sets`}>
 		    					<SetList updateLoadSets={this.updateLoadSets}/>
 		    				</Route>
-		    				<Route path={`${base_path}/students`}>
-		    				    <CreateQuestion updateLoadSets={this.updateLoadSets}/>
-							</Route>
+		        			<Route path={`${base_path}/add-student`}>
+		    					<AddStudent/>
+		    				</Route>
+		    				<Route path={base_path}>
+		    					<div className="tutor-panel-left">
+		    						
+		    					</div>
+		    					<div className="tutor-panel-right">
+		    						<h2>Students</h2>
+		    						<StudentList/>
+		    					</div>
+		    				</Route>
 		        		</Switch>
 	        		</div>
         		</div>
@@ -70,9 +76,3 @@ class TutorPanel extends Component {
 }
 
 export default TutorPanel;
-
-						 // <CreateQuestion popupMethod={this.controlPopup} updateLoadSets={this.updateLoadSets}/>
-						 // {
-						 // 	this.state.popupOpen[0] && 
-						 // 	<Popup className="popup-cont" popupMethod={this.controlPopup}><CreateSet popupMethod={this.controlPopup} loadSets={this.state.loadSets}/></Popup>
-						 // }

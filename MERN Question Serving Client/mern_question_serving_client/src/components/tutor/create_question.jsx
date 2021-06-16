@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import Switch from "react-switch";
 import SetDropdown from './set_dropdown.jsx'
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoAddCircle } from "react-icons/io5";
 import axios from 'axios';
 
 const maxAnswers = 8;
-
-const tutor_id = '60b9708d0ace8e1c0c836b60';
 
 // This is the create question componenet
 // It is solely the form that allows for question creation.
@@ -62,7 +60,7 @@ class CreateQuestion extends Component {
     onSubmit = e => {
     	e.preventDefault();
 
-        axios.post(`/api/tutors/questions/${tutor_id}/${this.props.set_id}/`, {
+        axios.post(`/api/tutors/questions/${this.props.set_id}/`, {
             body: this.state.body,
             answers: this.state.answers,
             mcq: this.state.mcq
@@ -98,7 +96,7 @@ class CreateQuestion extends Component {
 
 	            		{/* Creates + button and removes it when max answers is reached */}
 	            		{this.state.answers.length < maxAnswers && 
-		        		<a className="add-answers" name="addAnswers" onClick={() => this.onAnswerChange(true)}>+</a>}
+		        		<a className="add-answer" name="addAnswer" onClick={() => this.onAnswerChange(true)}><IoAddCircle/></a>}
             		</div>
             	}
     			{/* Renders FRQ*/}

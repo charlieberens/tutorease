@@ -20,8 +20,7 @@ class CreateSet extends Component {
     onSubmit = e => {
         e.preventDefault();
         axios.post('/api/tutors/sets/', {
-            title: this.state.title,
-            author_id: tutorID
+            title: this.state.title
         })
         .then(res => {
             // close popup

@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Tutor = require('../models/Tutor');
+const User = require('../models/User');
 
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+
+const checkUserLoggedIn = (req, res, next) => {
+    req.user ? next(): res.sendStatus(401)
+}
 
 // ---------------------- Get ----------------------------
 // Get tutor
@@ -12,10 +16,14 @@ router.get('/', (req, res) => {
 });
 
 // Get sets
-router.get('/sets/:tutor_id', async (req, res) => {
+router.get('/sets/', checkUserLoggedIn, async (req, res) => {
 	try{
-		const tutor = await Tutor.findById(req.params.tutor_id);
-		const sets = tutor.sets.map(set => ({title: set.title, date: set.date, id: set._id})).reverse();
+		const user_id = req.session.passport.user;
+		const tutor_user = await User.findById(user_id);
+		const sets = tutor_user.tutorDeets.sets.map(set => ({title: set.title,
+			date: set.date,
+			id: set._id
+		})).reverse();
 		res.json({sets: sets});
 	} catch(err) {
 		res.send(err);
@@ -24,43 +32,37 @@ router.get('/sets/:tutor_id', async (req, res) => {
 // Get set
 router.get('/set/:tutor_id/:set_id', async(req, res) => {
 	try{
-		const tutor = await Tutor.findById(req.params.tutor_id);
-		const set = tutor.sets.find(x => x._id == req.params.set_id);
-		res.json({set: set});
+		const tutor_user = await User.findById(req.params.tutor_id);
+		const set = tutor_user.tutorDeets.sets.find(x => x._id == req.params.set_id);
+		const tempQuestions = set.questions.map(question => ({
+			body: question.body,
+			id: question._id,
+			answers: question.answers,
+			mcq: question.mcq
+		}));
+		res.json({
+			id: set._id,
+			title: set.title,
+			date: set.date,
+			questions: tempQuestions
+		});
 	}catch(err){
 		res.send(err)
 	}
 })
 
 // ---------------------- Post ---------------------------
-// Post tutor
-router.post('/', (req, res) => {
-	const body = req.body;
-	const tutor = new Tutor({
-		name: body.name,
-		email: body.email,
-		username: body.username
-	});
-
-	tutor.save() //Saves the user to the database
-	.then(data => {
-		res.sendStatus(201);
-	})
-	.catch(err => {
-		res.send(err);
-	});
-});
-
 // Post Set
 router.post('/sets/', (req, res) => {
+	const user_id = req.session.passport.user;
 	const body = req.body;
-	const qset = {
+	const set = {
 		title: body.title,
 		description: body.description
 	}
-	Tutor.findById(body.author_id, (err, tutor) => { //Finds Tutor from id and passes it into tutor var
-		tutor.sets.push(qset);
-		tutor.save() //Saves the set to the database
+	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+		tutor_user.tutorDeets.sets.push(set);
+		tutor_user.save() //Saves the set to the database
 		.then(data => {
 			res.sendStatus(201);
 		})
@@ -71,7 +73,8 @@ router.post('/sets/', (req, res) => {
 });
 
 // Post Question
-router.post('/questions/:tutor_id/:set_id', (req, res) => {
+router.post('/questions/:set_id', (req, res) => {
+	const user_id = req.session.passport.user;
 	const body = req.body;
 	const question = {
 		body: body.body,
@@ -79,12 +82,12 @@ router.post('/questions/:tutor_id/:set_id', (req, res) => {
 		answers: body.answers
 	}
 
-	Tutor.findById(req.params.tutor_id, (err, tutor) => { //Finds Tutor from id and passes it into tutor var
+	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
 		// const set = tutor.sets.id(req.params.set_id);
-		tutor.sets.find(x => x._id == req.params.set_id).questions.push(question);
+		tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
 
 		//Garbage code that pushes question
-		tutor.save() //Saves the set to the database
+		tutor_user.save() //Saves the set to the database
 		.then(data => {
 			res.sendStatus(201);
 		})
@@ -94,17 +97,18 @@ router.post('/questions/:tutor_id/:set_id', (req, res) => {
 	});
 });
 
+// DELETE
 // Delete Set
-router.delete('/sets/:tutor_id/:set_id', (req, res) => {
-	const set_id = req.params.set_id;
+router.delete('/sets/:set_id', (req, res) => {
+	const user_id = req.session.passport.user;
 	const tutor_id = req.params.tutor_id;
 
-	Tutor.findById(tutor_id, (err, tutor) => { //Finds Tutor from id and passes it into tutor var
-		const filtered = tutor.sets.filter((x) => {
-			return x._id != set_id;
+	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+		const filtered = tutor_user.tutorDeets.sets.filter((set) => {
+			return set._id != set_id;
 		});
-		tutor.sets = filtered;
-		tutor.save() //Saves the set to the database
+		tutor_user.sets = filtered;
+		tutor_user.save() //Saves the set to the database
 		.then(data => {
 			res.sendStatus(200);
 		})
@@ -113,5 +117,32 @@ router.delete('/sets/:tutor_id/:set_id', (req, res) => {
 		});
 	});
 });
+// Delete Question
+router.delete('/set/:set_id/:question_id', (req, res) => {
+	const user_id = req.session.passport.user;
+	const set_id = req.params.tutor_id;
+	const question_id = req.params.question_id;
+
+	User.findById(tutor_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+		const set = tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id);
+		tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.splice(indexOfProperty(set.questions, '_id', question_id), 1);
+		tutor_user.save() //Saves the set to the database
+		.then(data => {
+			res.sendStatus(200);
+		})
+		.catch(err => {
+			res.send(err);
+		});
+	});
+});
+
+function indexOfProperty(arr, propName, val){
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i][propName] === val){
+			return(i);
+		}
+	}
+	return(false);
+}
 
 module.exports = router;

@@ -32,27 +32,17 @@ const SetSchema = new mongoose.Schema({
 });
 
 const TutorSchema = mongoose.Schema({
-	name: {
-		type: String,
-		required: true
-	},
-	email: {
-		type: String,
-		required: true
-	},
-	username: {
-		type:String,
-		required: true
+	userId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        required: true 
 	},
 	sets: [SetSchema],
-	start_date: {
-		type: Date,
-		default: Date.now
-	}//,
-	// students: [{
-	// 	type: mongoose.Schema.Types.ObjectId,
-	// 	ref: Student
-	// }],
+	students: [{
+		type: mongoose.Schema.Types.ObjectId
+	}],
+	studentRequests: [{
+		type: mongoose.Schema.Types.ObjectId
+	}]
 });
 
 module.exports = mongoose.model('Tutor', TutorSchema);

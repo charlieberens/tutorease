@@ -9,10 +9,13 @@
   --purple-60: hsl(255, 95%, 60%);
   --purple-55: hsl(255, 95%, 55%);
 
-  --green-50:  hsl(87, 60%, 50%);
+  --green-50:  hsl(120, 33%, 50%);
+  --green-60:  hsl(120, 33%, 60%);
+  --green-90:  hsl(120, 33%, 90%);
 
-  --red-60: hsl(359, 87%, 60%);
   --red-50: hsl(359, 87%, 50%);
+  --red-60: hsl(359, 87%, 60%);
+  --red-90: hsl(359, 87%, 90%);
 
   --primary-1: var(--purple-55);
   --primary-2: var(--purple-60);
@@ -72,19 +75,25 @@ a{
 }
 
 /* Default Styles */
-button, input[type="submit"], .button-a, .button-w{  
+button, input[type="submit"], .button-a, .button-w, .button{  
   font-family: noto-sans, sans-serif;
   font-size: 100%;
   padding: .4em .8em;
   border-radius: 5px;
   cursor: pointer;
+  user-select: none;
 }
-.button-a{
+.button-a:not([disabled]){
   color:  white;
   background: var(--primary-1);
 }
-.button-a:hover{
+.button-a:not([disabled]):hover{
   background: var(--primary-2);
+}
+.button-a[disabled]{
+  cursor: not-allowed;
+  color:  var(--primary-1);
+  border: 1px solid var(--primary-1);
 }
 .button-w{
   color: white;
@@ -92,6 +101,13 @@ button, input[type="submit"], .button-a, .button-w{
 }
 .button-w:hover{
   background: var(--red-50)
+}
+.button-s{
+  color: white;
+  background: var(--green-60)
+}
+.button-s:hover{
+  background: var(--green-50)
 }
 .button-g{
   color: white;
@@ -209,3 +225,16 @@ input[type=text]{
   margin-left: 1em;
 }
 
+/* Nav */
+nav{
+  display: flex;
+  justify-content:space-between;
+  padding: 1.5em;
+  align-items: center;
+}
+.nav-profile-icon{
+  width: 3em;
+  height: 3em;
+  padding: 0;
+  border-radius: 50%;
+}

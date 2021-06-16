@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
 import axios from 'axios';
 import SetListPopup from './set_list_popup'
@@ -17,41 +18,35 @@ import {
 
 const maxItemLen = 25;
 
-const tutor_id = '60b9708d0ace8e1c0c836b60';
-
-const base_path = '/tutors/sets'
+const base_path = '/app/tutors/sets'
 
 class SetList extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-        	sets: [
-                {
-                    title: "Title",
-                    date: "2021-06-04T00:15:09.750+00:00",
-                    id: '60b971b99684d98b7c4ddf8e',
-                    dateF: "Jan. 1, 2021",
-                    popupOpen: false
-                }
-            ],
+        	sets: [],
             createSetPopupOpen: false,
             deleteSetPopupOpen: false,
-            deleteSet: undefined
+            deleteSet: undefined,
         }
         this.loadSets()
-        // this.props.updateLoadSets(this.loadSets);
     }
 
     loadSets = () => {
-        axios.get(`/api/tutors/sets/${tutor_id}`)
+        axios.get('/api/tutors/sets/')
         .then(res => {
+            console.log(res);
             const tempSets = res.data.sets.map(set => {
                 set.dateF = dayjs(set.date).format('MMM. D, YYYY');
                 return {...set, popupOpen: false}
             });
             this.setState({sets: tempSets}); 
-        })
+        }).catch(err => {
+            if(err.response.status == 401){
+                window.location.replace("/login");
+            }
+        });
     }
 
     openPopup = () => {
@@ -87,7 +82,7 @@ class SetList extends Component {
     }
 
     render() {
-    	if(!this.state.sets){ //If there aren't any sets
+        if(!this.state.sets){ //If there aren't any sets
     		return <div></div>
     	}else{ // If Open Dropdown
 	        return (

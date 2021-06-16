@@ -31,9 +31,9 @@ class SetListPopup extends Component {
 
     render() {
         return (
-            <div className="set-list-popup" ref={this.setBoxRef}>
-            	<div className="set-list-popup-edit"><IoPencil className="set-list-popup-icon"/>Edit Set</div>
-            	<div className="set-list-popup-delete" onClick={this.props.deleteSet}><IoClose className="set-list-popup-icon"/>Delete Set</div>
+            <div className="micro-popup" ref={this.setBoxRef}>
+                <div className="micro-popup-edit"><IoPencil className="micro-popup-icon"/>Edit Set</div>
+                <div className="micro-popup-delete" onClick={this.props.deleteSet}><IoClose className="micro-popup-icon"/>Delete Set</div>
             </div>
         );
     }

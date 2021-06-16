@@ -1,38 +1,51 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const connectDB = require('./connect_db');
+const connectDB = require('./config/connect_db');
 const cors = require('cors')
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const keys = require('./config/keys')
+require('./passport');
 
 const app = express();
 
 connectDB(); //Connects to the database using the connect_db.js folder
 
+// Passport Config
+app.use(cookieSession({
+  name: 'session-name',
+  keys: keys.session.secrets
+}))
+
+app.use(cors());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Triggers this JSON reading package on all posts
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
 app.use(express.static(path.join(__dirname, '../MERN Question Serving Client/mern_question_serving_client/build')));
 
 // BTS GET/POST endpoints. Endpoints will begin with /api/
-const questionRoute = require('./routes/questions.js');
-// const qsetRoute = require('./routes/qsets.js');
 const tutorRoute = require('./routes/tutors.js');
+const userRoute = require('./routes/users.js');
+const studentRoute = require('./routes/students.js');
+const authRoute = require('./routes/auth.js');
 
 // Directs these endpoints to the files in /routes
 // The endpoint refers to the DB used, not the data wanted
-app.use('/api/questions', questionRoute);
-// app.use('/api/qsets', qsetRoute);
 app.use('/api/tutors', tutorRoute);
+app.use('/api/users', userRoute);
+app.use('/api/students', studentRoute);
+app.use('/auth', authRoute);
 
 // Temporary base url
 // app.get('/', (req, res) => res.send('Yo efe'));
 app.get('/*', (req,res) =>{
     res.sendFile(path.join(__dirname, '../MERN Question Serving Client/mern_question_serving_client/build/index.html'));
 });
-
-
-
-
-
 
 const port = 3000;
 
