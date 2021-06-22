@@ -18,7 +18,7 @@ import {
 
 const maxItemLen = 25;
 
-const base_path = '/app/tutors/sets'
+const base_path = '/app/tutor/sets'
 
 class SetList extends Component {
     constructor(props) {
@@ -36,7 +36,6 @@ class SetList extends Component {
     loadSets = () => {
         axios.get('/api/tutors/sets/')
         .then(res => {
-            console.log(res);
             const tempSets = res.data.sets.map(set => {
                 set.dateF = dayjs(set.date).format('MMM. D, YYYY');
                 return {...set, popupOpen: false}

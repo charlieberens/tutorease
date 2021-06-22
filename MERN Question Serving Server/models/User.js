@@ -28,7 +28,10 @@ const SetSchema = new mongoose.Schema({
 	date: {
 		type: Date,
 		default: Date.now
-	}
+	},
+	students: [
+		{type: mongoose.Schema.Types.ObjectId}
+	]
 });
 
 const TutorSchema = new mongoose.Schema({
@@ -55,9 +58,13 @@ const StudentSchema = new mongoose.Schema({
 		{
 			tutorId: mongoose.Schema.Types.ObjectId,
 			setId: mongoose.Schema.Types.ObjectId,
-			length: Number,
-			numAnswered: Number,
-			numCorrect: Number
+			setLength: Number,
+			numAnswered: {
+				type: Number,
+				default: 0
+			},
+			numCorrect: Number,
+			deleted: Boolean
     	}
 	]
 });

@@ -48,6 +48,8 @@ h1,h2,h3,h4,h5,h6{
   font-family: aktiv-grotesk, sans-serif;
   font-weight: 700;
   /*font-weight: 600;*/
+}
+h1{
   margin-bottom: .5em;
 }
 p{
@@ -178,6 +180,14 @@ input[type=text]{
 }
 .close-cancel-cont *:nth-child(1){
   margin-right: .5em;
+}
+.popup-error-message-cont{
+  margin-bottom: 1em;
+}
+.popup-error-message{
+  color: var(--red-50);
+  font-size: 85%;
+  font-style: italic;
 }
 
 /* Questions  */

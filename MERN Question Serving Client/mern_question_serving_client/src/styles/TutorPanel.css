@@ -1,5 +1,5 @@
 /* Tutor Panel */
-.tutor-panel-main{
+.tutor-panel-outer{
   display: flex;
   justify-content: center;
   margin-top: 1.5em;
@@ -9,11 +9,22 @@
   text-align: center;
 }
 
+/* Tutor Panel Home */
+.tutor-panel-main{
+  display: flex;
+  justify-content: space-around;
+}
+
 /* Create Question */
 .create-question-form{
   padding: 2em;
   width: 20em;
   max-width: 100%;
+}
+.create-question-body{
+  max-width: 100%;
+  min-width: 100%;
+  min-height: 300px;
 }
 .create-question-answer-outer{
   display: flex;
@@ -155,6 +166,7 @@
   right: .75em;
   color: var(--grey-70);
   padding: .25em;
+  cursor: pointer;
 }
 .question-list-item-dots:hover{
   color:  var(--grey-20);
@@ -300,7 +312,7 @@
   border-radius: 5px;
   display: flex;
   align-items: center;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
   cursor:  pointer;
   max-width: 100%;
   width: 17em; 
@@ -339,13 +351,36 @@
 }
 .student-list-item-right{
   text-align: left;
-  display: flex;
-  align-items: center;
 }
 .student-list-item-right h3{
   margin-bottom: .15em;
 }
-
 .student-list-pending{
   opacity: .5;
+}
+.student-list-add-student-link{
+  color: var(--primary-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.student-list-add-student-link:hover{
+  color: var(--primary-2);
+}
+.student-list-add-student-link-add{
+  margin-right: .5em;
+}
+
+/* Assign Set */
+.assign-student-list-item{
+  border: 1px solid var(--grey-80);
+  border-radius: 5px;
+  margin-bottom: .5em;
+  cursor: pointer;
+}
+.assign-student-list-item:hover{
+  border-color: var(--grey-50);
+}
+.assign-student-list-item.selected{
+  border: 2px solid var(--primary-1);
 }

@@ -3,6 +3,7 @@ import TutorPanel from './tutor/tutor_panel'
 import StudentPanel from './student/student_panel'
 import Profile from './profile/profile'
 import axios from 'axios';
+import SetController from './student/set_controller'
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -33,34 +34,43 @@ class Main extends Component {
     }
 
     render() {
-        return (
-            <div>
-	            <nav>
-	            	<div className="nav-left">
-						<Link to="/">Home</Link>
-						<Link to="/app/tutor">Tutor</Link>
-						<Link to="/app/student">Student</Link>
-						<Link to="/app/profile">Profile</Link>
-						<Link to="/login">Log In</Link>
-	            	</div>
-	            	<div className="nav-right">
-	            		<img className="nav-profile-icon" src={this.state.user?.profileIcon}/>
-	            	</div>
-	            </nav>
+    	if(this.state.user){
+	        return (
+	            <div>
+		            <nav>
+		            	<div className="nav-left">
+							<Link to="/">Home</Link>
+							{this.state.user.tutor && <Link to="/app/tutor">Tutor</Link>}
+							{this.state.user.student && <Link to="/app/student">Student</Link>}
+							<Link to="/app/profile">Profile</Link>
+							<Link to="/login">Log In</Link>
+		            	</div>
+		            	<div className="nav-right">
+		            		<img className="nav-profile-icon" src={this.state.user?.profileIcon}/>
+		            	</div>
+		            </nav>
 
-				<Switch>
-					<Route path="/app/tutor">
-						<TutorPanel/>
-					</Route>
-					<Route path="/app/student">
-						<StudentPanel/>
-					</Route>
-					<Route path="/app/profile">
-						<Profile/>
-					</Route>
-				</Switch>
-            </div>
-        );
+					<Switch>
+						<Route path="/app/tutor">
+							<TutorPanel/>
+						</Route>
+						<Route path="/app/student/:set_id">
+							<SetController/>
+						</Route>
+						<Route path="/app/student">
+							<StudentPanel/>
+						</Route>
+						<Route path="/app/profile">
+							<Profile/>
+						</Route>
+					</Switch>
+	            </div>
+	        );
+    	}else{
+    		return (
+    			<em>Give us a second</em>
+    		)
+    	}
     }
 }
 

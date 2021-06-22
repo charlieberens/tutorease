@@ -5,6 +5,8 @@ const User = require('../models/User');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
+const common = require('../common_functions.js')
+
 const checkUserLoggedIn = (req, res, next) => {
     req.user ? next(): res.sendStatus(401)
 }
@@ -15,7 +17,7 @@ router.get('/search/:query_string', checkUserLoggedIn, (req, res) => {
 	const user_id = req.session.passport.user;
 
 	const handle_results = async (err, users) => {
-		const students = users.filter(user => (user.student && user._id != user_id && !user.studentDeets.tutorRequests.includes(user._id)));
+		const students = users.filter(user => (user.student && user._id != user_id && !user.studentDeets.tutorRequests.includes(user_id) && !user.studentDeets.tutors.includes(user_id)));
 		res.json({students: students});
 	}
 	if(query_string[0] === '@'){
@@ -40,7 +42,6 @@ router.get('/search/:query_string', checkUserLoggedIn, (req, res) => {
 });
 // Get a tutor's students
 router.get('/list-students', (req, res) => {
-	console.log('aaaa')
 	const user_id = req.session.passport.user;
 	User.findById(user_id, (err, tutor_user) => {
 		if (err){
@@ -48,7 +49,6 @@ router.get('/list-students', (req, res) => {
 		}else{
 			if(tutor_user.tutor){
 				try{
-					console.log('AAAAA ', tutor_user);
 					User.find({"_id": {$in: tutor_user.tutorDeets.students}}, {displayName: 1, username: 1, profileIcon: 1, _id: 1}, (err, students) => {			
 						res.json({students: students});
 					});
@@ -120,6 +120,81 @@ router.get('/invite/list-outgoing', (req, res) => {
 		}
 	});
 });
+// Get sets assigned to a student
+router.get('/sets', (req, res) => {
+	const user_id = req.session.passport.user;
+	console.log(user_id)
+	User.findById(user_id, async (err, student_user) => {
+		const sets = student_user.studentDeets.sets;
+		let incomplete = []
+		let tutor_set_obj = {}
+		let embiggened_sets = []
+		sets.forEach(set => {
+			if(tutor_set_obj[set.tutorId]){
+				tutor_set_obj[set.tutorId].push(set.setId.toString());
+			}else{
+				tutor_set_obj[set.tutorId] = [set.setId.toString()];
+			}
+		})
+		for(let tutor_id in tutor_set_obj){
+			await User.findById(tutor_id, (err, tutor_user) => {
+				let set_list = [];
+				for (var i = 0; i < tutor_user.tutorDeets.sets.length; i++) {
+					if(tutor_set_obj[tutor_id].includes(tutor_user.tutorDeets.sets[i]._id.toString())){
+						set_list.push(tutor_user.tutorDeets.sets[i])
+					}
+				}
+				set_list = set_list.map(set => ({
+					title: set.title,
+					setLength: (set.questions ? set.questions.length : 0),
+					tutorUsername:  tutor_user.username,
+					tutorDisplayName:  tutor_user.displayName,
+					setId: set._id,
+					numAnswered: sets.find(qset => qset.setId.toString() === set._id.toString()).numAnswered
+				}));
+				embiggened_sets.push(...set_list);
+			});
+		}
+		res.json({
+			incomplete: embiggened_sets.filter(set => set.numAnswered != set.setLength),
+			complete: embiggened_sets.filter(set => set.numAnswered == set.setLength)
+		})
+	}).catch(err => {
+		res.send(err);
+	});
+});
+router.get('/set/:set_id', (req, res) => {
+	const user_id = req.session.passport.user;
+	const set_id = req.params.set_id;
+	User.findById(user_id, (err, student_user) => {
+		try{
+			if(student_user.student){
+				const student_set = student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString());
+				User.findById(student_set.tutorId, (err, tutor_user) => {
+					const tutor_set = tutor_user.tutorDeets.sets.find(set => set._id.toString() === set_id.toString());
+					res.json({
+						completed: (student_set.setLength == student_set.numAnswered),
+						numAnswered: student_set.numAnswered,
+						id: tutor_set._id,
+						questions: common.shuffle(tutor_set.questions),
+						title: tutor_set.title,
+						description: tutor_set.description,
+						date: tutor_set.date,
+						tutorIcon: tutor_user.profileIcon,
+						tutorName: tutor_user.displayName,
+						tutorUsername: tutor_user.username						
+					}) 
+				}).catch(err =>{
+					res.send(err);
+				});
+			}else{
+				res.sendStatus(400)
+			}
+		}catch(err){
+			res.send(err)
+		}
+	});
+});
 
 // Post
 router.post('/invite/:student_id', (req, res) => {
@@ -171,31 +246,52 @@ router.post('/invite/accept/:tutor_id', (req, res) => {
 		}
 	});
 });
-router.post('/assign/:student_id/:set_id', (req, res) => {
+router.post('/assign/:student_ids/:set_id', (req, res) => {
 	const user_id = req.session.passport.user;
-	const student_id = req.params.student_id;
+	const student_ids = req.params.student_ids.split(',');
 	const set_id = req.params.set_id;
 	User.findById(user_id, (err, tutor_user) => {
-		if(tutor_user.tutorDeets.students.includes(student_id)){
-			User.findById(student_id, (err, tutor_user) => {
-				if(!(tutor_user.tutorDeets.sets.some(set => set._id === set_id))){
-					res.sendStatus(400);
-				}
-			});
-			const set = {
-				tutorId: tutor_id,
-				setId: set_id,
-				numAnswered: 0
-			}
-			student_user.studentDeets.sets.push(set);
-			student_user.save().then(data => {
-				res.sendStatus(200);
-			})
-			.catch(err => {
-				res.send(err);
-			});
+		const set = {
+			tutorId: user_id,
+			setId: set_id,
+			setLength: tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).questions.length,
+			numAnswered: 0
 		}
-	});
+		if(!set.setLength){
+			res.status(400).json({err: 'Set must not be empty'});
+		}else{
+			for(student_id of student_ids){
+				if(tutor_user.tutorDeets.students.includes(student_id)){
+					User.findById(student_id, (err, student_user) => {
+						// if(tutor_user.tutorDeets.sets.some(set => set._id === set_id)){
+						if(!student_user.studentDeets.sets.filter(qset => qset.setId == set_id).length){//Only adds set if set not already present
+							student_user.studentDeets.sets.push(set);
+							student_user.save()
+							.catch(err => {
+								res.send(err);
+							});
+						}
+						// }
+					});
+				}
+				tutor_user.save();
+			}
+			// Verbose code that updates the assigned student (student) field for the set
+			const students = tutor_user.tutorDeets.students;
+			const assignedStudents = tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).students;
+			const valid_students = student_ids.filter(student_id => {
+				return students.includes(student_id)
+			});
+			const new_students = valid_students.filter(student_id => {
+				return !assignedStudents.includes(student_id)
+			})
+			tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).students.push(...new_students);
+			tutor_user.save();
+			res.sendStatus(200);
+		}
+	}).catch(err =>{
+		send(err);
+	})
 });
 
 module.exports = router;

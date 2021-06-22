@@ -5,9 +5,8 @@ import Popup from '../popup';
 import QuestionPopup from './question_popup'
 import CreateQuestion from './create_question';
 import DeleteQuestion from './delete_question';
+import AssignSet from './assign_set'
 import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
-
-const tutor_id = '60b9708d0ace8e1c0c836b60';
 
 class Set extends Component {
     constructor(props) {
@@ -18,6 +17,7 @@ class Set extends Component {
       		popupOpen: false,
       		createQuestionPopupOpen: false,
       		deleteQuestionPopupOpen: false,
+      		assignQuestionPopupOpen: false,
       		deleteQuestion: undefined
     	}
 
@@ -25,7 +25,7 @@ class Set extends Component {
     }
     
     loadSet = () => {
-    	axios.get(`/api/tutors/set/${tutor_id}/${this.props.match.params.id}`)
+    	axios.get(`/api/tutors/set/${this.props.match.params.id}`)
         .then(res => {
         	const tempQuestions = res.data.questions.map(question => {
         		return {...question, popupOpen: false}
@@ -61,12 +61,16 @@ class Set extends Component {
     controlDeleteQuestionPopup = bool => {
     	this.setState({deleteQuestionPopupOpen: bool})
     }
+    controlAssignQuestionPopup = bool => {
+    	this.setState({assignQuestionPopupOpen: bool})
+    }
 
     render() {
 		return (
 			<>
 				<div>
 					<h1>{this.state.title}</h1>
+					<a onClick={() => this.controlAssignQuestionPopup(true)}>Good Link</a>
 					{!this.state.questions.length ?
 						(<div className="no-questions-cont">
 							<p>This set doesn't have any questions. <a className="inline-a" onClick={() => this.controlCreateQuestionPopup(true)}>Make one</a>?</p>
@@ -100,6 +104,9 @@ class Set extends Component {
 				</div>
 				{this.state.popupOpen && //Create Question Popup
 					<Popup popupMethod={this.controlCreateQuestionPopup}><CreateQuestion set_id={this.props.match.params.id} popupMethod={this.controlCreateQuestionPopup} loadMethod={this.loadSet}/></Popup>
+				}
+				{this.state.assignQuestionPopupOpen && //Create Question Popup
+					<Popup popupMethod={this.controlAssignQuestionPopup}><AssignSet set_id={this.props.match.params.id} set_title={this.state.title} popupMethod={this.controlAssignQuestionPopup}/></Popup>
 				}
 			    {this.state.deleteQuestionPopupOpen &&
                     <Popup popupMethod={this.controlDeleteQuestionPopup}><DeleteQuestion popupMethod={this.controlDeleteQuestionPopup} loadQuestions={this.loadSet} question={this.state.deleteQuestion}/></Popup>

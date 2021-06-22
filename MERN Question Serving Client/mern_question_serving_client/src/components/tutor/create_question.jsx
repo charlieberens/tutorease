@@ -85,12 +85,12 @@ class CreateQuestion extends Component {
             	{this.state.mcq && 
             		<div>
             			{/* Renders first answer*/}
-            			<div className="create-question-answer-outer"><input type="text" name="create-question-answer-0" className="create-question-answer first-answer" onChange={this.onChange} answerindex={0}/></div>
+            			<div className="create-question-answer-outer"><input type="text" name="create-question-answer-0" className="create-question-answer first-answer" onChange={this.onChange} answerindex={0} autocomplete="off"/></div>
 
             			{/* Renders all answers but the first*/}
 	            		{this.state.answers.slice(1).map((answer, index) => 
 	            			<div key={index} className="create-question-answer-outer">
-	            				<input type="text" name={'create-question-answer' + (index+1)} value={this.state.answers[index+1]} answerindex={index+1} className="create-question-answer" onChange={this.onChange}/>
+	            				<input type="text" name={'create-question-answer' + (index+1)} value={this.state.answers[index+1]} answerindex={index+1} className="create-question-answer" onChange={this.onChange} autocomplete="off"/>
 	            				<a className="remove-answers close" name="remove-answers" answerindex={index+1} onClick={() => this.onAnswerChange(false,index+1)}><IoClose/></a>
             				</div>)}
 

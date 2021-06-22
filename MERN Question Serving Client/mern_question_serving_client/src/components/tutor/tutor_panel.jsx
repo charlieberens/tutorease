@@ -13,8 +13,10 @@ import Popup from '../popup'
 import SetList from './set_list'
 import StudentList from './student_list'
 import Set from './set'
-import '../../styles/TutorPanel.css'
 import AddStudent from './add_student'
+import AssignSet from './assign_set'
+import '../../styles/TutorPanel.css'
+import axios from 'axios'
 const base_path = '/app/tutor'
 
 class TutorPanel extends Component {
@@ -24,9 +26,14 @@ class TutorPanel extends Component {
 	      popupOpen: [
 	        false //0, CreateSet
 	      ],
-	      loadSets: null
+	      loadSets: null,
+	      tutorDeets: null
 	    }
     };
+
+    componentDidMount = () => {
+    	this.loadTutor();
+    }
 
 	controlPopup = (open, popupIndex) => { //Open argument = true for opening and false for closin
 		const tempPopup = this.state.popupOpen.splice()
@@ -43,35 +50,49 @@ class TutorPanel extends Component {
 		});
 	}
 
+	loadTutor = () => {
+		axios.get('/api/tutors').then(res => {
+			this.setState({tutorDeets: res.data})
+		})
+	}
+
     render() {
-        return (
-            <div>
-            	<div className="tutor-panel-main">
-            		<div className="tutor-panel-inner">
-		        		<Switch>
-		        			<Route path={`${base_path}/sets/:id`}>
-		    					<Set updateLoadSets={this.updateLoadSets}/>
-		    				</Route>
-		        			<Route path={`${base_path}/sets`}>
-		    					<SetList updateLoadSets={this.updateLoadSets}/>
-		    				</Route>
-		        			<Route path={`${base_path}/add-student`}>
-		    					<AddStudent/>
-		    				</Route>
-		    				<Route path={base_path}>
-		    					<div className="tutor-panel-left">
-		    						
-		    					</div>
-		    					<div className="tutor-panel-right">
-		    						<h2>Students</h2>
-		    						<StudentList/>
-		    					</div>
-		    				</Route>
-		        		</Switch>
+    	if(this.state.tutorDeets){
+	        return (
+	            <div>
+	            	<div className="tutor-panel-outer">
+	            		<div className="tutor-panel-inner">
+			        		<Switch>
+			        			<Route path={`${base_path}/sets/assign/:id`}>
+			    					<AssignSet/>
+			    				</Route>
+			        			<Route path={`${base_path}/sets/:id`}>
+			    					<Set updateLoadSets={this.updateLoadSets}/>
+			    				</Route>
+			        			<Route path={`${base_path}/add-student`}>
+			    					<AddStudent tutorDeets={this.state.tutorDeets}/>
+			    				</Route>
+			    				<Route path={base_path}>
+			    					<div className="tutor-panel-main">
+				    					<div className="tutor-panel-left">
+				    						<SetList/>
+				    					</div>
+				    					<div className="tutor-panel-right">
+				    						<h2>Students</h2>
+				    						<StudentList tutorDeets={this.state.tutorDeets}/>
+				    					</div>
+			    					</div>
+			    				</Route>
+			        		</Switch>
+		        		</div>
 	        		</div>
-        		</div>
-            </div>
-        );
+	            </div>
+	        );
+    	}else{
+    		return(
+    			<em>Give us a second</em>
+    		)
+    	}
     }
 }
 

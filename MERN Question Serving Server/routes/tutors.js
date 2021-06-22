@@ -11,8 +11,14 @@ const checkUserLoggedIn = (req, res, next) => {
 
 // ---------------------- Get ----------------------------
 // Get tutor
-router.get('/', (req, res) => {
-	res.send('You are on tutor')
+router.get('/', async (req, res) => {
+	const user_id = req.session.passport.user;
+	const user = await User.findById(user_id);
+	if(!user.tutor){
+		res.sendStatus(400)
+	}else{
+		res.json(user.tutorDeets)
+	}
 });
 
 // Get sets
@@ -30,9 +36,10 @@ router.get('/sets/', checkUserLoggedIn, async (req, res) => {
 	}
 });
 // Get set
-router.get('/set/:tutor_id/:set_id', async(req, res) => {
+router.get('/set/:set_id', async(req, res) => {
 	try{
-		const tutor_user = await User.findById(req.params.tutor_id);
+		const user_id = req.session.passport.user;
+		const tutor_user = await User.findById(user_id);
 		const set = tutor_user.tutorDeets.sets.find(x => x._id == req.params.set_id);
 		const tempQuestions = set.questions.map(question => ({
 			body: question.body,
@@ -85,8 +92,8 @@ router.post('/questions/:set_id', (req, res) => {
 	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
 		// const set = tutor.sets.id(req.params.set_id);
 		tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
+		console.log('pay attention', tutor_user)
 
-		//Garbage code that pushes question
 		tutor_user.save() //Saves the set to the database
 		.then(data => {
 			res.sendStatus(201);
@@ -101,13 +108,17 @@ router.post('/questions/:set_id', (req, res) => {
 // Delete Set
 router.delete('/sets/:set_id', (req, res) => {
 	const user_id = req.session.passport.user;
-	const tutor_id = req.params.tutor_id;
+	const set_id = req.params.set_id;
 
 	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
-		const filtered = tutor_user.tutorDeets.sets.filter((set) => {
-			return set._id != set_id;
-		});
-		tutor_user.sets = filtered;
+		tutor_user.tutorDeets.sets.find(set => set._id = set_id).students.forEach(student_id => {
+			User.findById(student_id, (err, student_user) => {
+				student_user.studentDeets.sets.find(set => set.setId == set_id).deleted = true;
+				student_user.save();
+			});
+		});		
+		const filtered = tutor_user.tutorDeets.sets.filter(set => set._id != set_id);
+		tutor_user.tutorDeets.sets = filtered;
 		tutor_user.save() //Saves the set to the database
 		.then(data => {
 			res.sendStatus(200);

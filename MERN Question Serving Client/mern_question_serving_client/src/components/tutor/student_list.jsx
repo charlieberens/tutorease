@@ -17,7 +17,6 @@ class StudentList extends Component {
     }
 
     loadStudents = () => {
-        console.log('called')
         axios.get('/api/students/list-students').then(res => {
             this.setState({students: res.data.students})
         }).catch(err => {
@@ -54,7 +53,7 @@ class StudentList extends Component {
                     )}
                 </div>
                 <div className="student-list-module-bottom">
-                    <Link to="/app/tutor/add-student"><IoAddCircle/>Add Student</Link>
+                    <Link to="/app/tutor/add-student" className="student-list-add-student-link"><IoAddCircle className="student-list-add-student-link-add"/>Add Student</Link>
                 </div>
             </div>
         );
