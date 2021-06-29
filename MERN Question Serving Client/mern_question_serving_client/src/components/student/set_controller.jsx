@@ -15,20 +15,22 @@ class SetController extends Component {
     			questions: [],
     			description: '',
     			date: ''
-    		}
+    		},
+    		loading: true
     	}
     }
 
     componentDidMount = () => {
-    	this.checkSetType();
+    	this.getSet();
     }
 
-    checkSetType = () => {
+    getSet = () => {
     	const re = /(?<=\/)[\dA-Za-z]+($|(?=(\?|\#)))/g;
     	axios.get(`/api/students/set/${window.location.href.match(re)[0]}`).then(res => {
     		this.setState({
     			completed: res.data.completed,
     			numAnswered: res.data.numAnswered,
+    			numCorrect: res.data.numCorrect,
     			tutor: {
 					icon: res.data.tutorIcon,
 					name: res.data.tutorName,
@@ -41,27 +43,27 @@ class SetController extends Component {
 	    			description: res.data.description,
 	    			date: res.data.date,
 	    			length: res.data.questions.length
-    			}
+    			},
+    			loading: false
     		})
     	}).catch(err => {
     		console.log(err);
-    	})
+    	});
     }
 
     render() {
-    	if(this.state.completed){
-	        return (
-	            <div>
-	            	Completed
-	            </div>
-	        );
+    	if(this.state.loading){
+    		return(
+	    		<div>
+	    			Loading
+	    		</div>
+    		)
     	}else{
-			console.log('this.state', this.state);
-    		return (
-    			<div className="set-game-cont">
-					<SetGame set={this.state}/>
-    			</div>
-    		);
+			return (
+				<div className="set-game-cont">
+					<SetGame set={this.state} getSet={this.getSet} completed={this.state.completed}/>
+				</div>
+			);
     	}
     }
 }

@@ -59,12 +59,14 @@ const StudentSchema = new mongoose.Schema({
 			tutorId: mongoose.Schema.Types.ObjectId,
 			setId: mongoose.Schema.Types.ObjectId,
 			setLength: Number,
-			numAnswered: {
-				type: Number,
-				default: 0
-			},
 			numCorrect: Number,
-			deleted: Boolean
+			deleted: Boolean,
+			questions: [
+				{
+					responses: [String]
+				}
+			],
+			completeDate: Date
     	}
 	]
 });

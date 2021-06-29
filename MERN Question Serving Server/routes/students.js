@@ -121,9 +121,8 @@ router.get('/invite/list-outgoing', (req, res) => {
 	});
 });
 // Get sets assigned to a student
-router.get('/sets', (req, res) => {
+router.get('/sets', async (req, res) => {
 	const user_id = req.session.passport.user;
-	console.log(user_id)
 	User.findById(user_id, async (err, student_user) => {
 		const sets = student_user.studentDeets.sets;
 		let incomplete = []
@@ -136,28 +135,29 @@ router.get('/sets', (req, res) => {
 				tutor_set_obj[set.tutorId] = [set.setId.toString()];
 			}
 		})
-		for(let tutor_id in tutor_set_obj){
+
+		for await (let tutor_id of Object.keys(tutor_set_obj)){
 			await User.findById(tutor_id, (err, tutor_user) => {
-				let set_list = [];
-				for (var i = 0; i < tutor_user.tutorDeets.sets.length; i++) {
+				for(let i=0; i<tutor_user.tutorDeets.sets.length; i++){				
 					if(tutor_set_obj[tutor_id].includes(tutor_user.tutorDeets.sets[i]._id.toString())){
-						set_list.push(tutor_user.tutorDeets.sets[i])
+						let set = tutor_user.tutorDeets.sets[i];
+						embiggened_sets.push({
+							title: set.title,
+							setLength: (set.questions ? set.questions.length : 0),
+							tutorUsername:  tutor_user.username,
+							tutorDisplayName:  tutor_user.displayName,
+							setId: set._id,
+							numAnswered: sets.find(qset => qset.setId.toString() === set._id.toString()).questions.filter(question => question.responses.length).length
+						});
+						console.log(i, embiggened_sets)
 					}
 				}
-				set_list = set_list.map(set => ({
-					title: set.title,
-					setLength: (set.questions ? set.questions.length : 0),
-					tutorUsername:  tutor_user.username,
-					tutorDisplayName:  tutor_user.displayName,
-					setId: set._id,
-					numAnswered: sets.find(qset => qset.setId.toString() === set._id.toString()).numAnswered
-				}));
-				embiggened_sets.push(...set_list);
-			});
+			})
 		}
+
 		res.json({
-			incomplete: embiggened_sets.filter(set => set.numAnswered != set.setLength),
-			complete: embiggened_sets.filter(set => set.numAnswered == set.setLength)
+			incomplete: embiggened_sets.filter(set => set.numAnswered < set.setLength),
+			complete: embiggened_sets.filter(set => set.numAnswered >= set.setLength)
 		})
 	}).catch(err => {
 		res.send(err);
@@ -173,10 +173,10 @@ router.get('/set/:set_id', (req, res) => {
 				User.findById(student_set.tutorId, (err, tutor_user) => {
 					const tutor_set = tutor_user.tutorDeets.sets.find(set => set._id.toString() === set_id.toString());
 					res.json({
-						completed: (student_set.setLength == student_set.numAnswered),
-						numAnswered: student_set.numAnswered,
+						completed: (tutor_set.questions.length <= student_set.questions.filter(question => question.responses.length).length),
+						numAnswered: student_set.questions.filter(question => question.responses?.length).length,
 						id: tutor_set._id,
-						questions: common.shuffle(tutor_set.questions),
+						questions: tutor_set.questions.map((question, index) => ({...question, answers: common.shuffle(question.answers), responses: student_set.questions[index].responses})),
 						title: tutor_set.title,
 						description: tutor_set.description,
 						date: tutor_set.date,
@@ -194,6 +194,36 @@ router.get('/set/:set_id', (req, res) => {
 			res.send(err)
 		}
 	});
+});
+router.get('/check/:set_id/:question_index', (req, res) => {
+	try{
+		const user_id = req.session.passport.user;
+		const set_id = req.params.set_id;
+		const question_index = req.params.question_index;
+		const answer = req.query.answer;
+
+		User.findById(user_id, (err, student_user) => {
+			if(!student_user.studentDeets.sets.find(set => set.setId.toString() == set_id.toString()).completeDate){
+				student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString()).questions[question_index].responses.push(answer);
+				User.findById(student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString()).tutorId, (err, tutor_user) => {
+					const correct_answer = tutor_user.tutorDeets.sets.find(set => set._id.toString() === set_id.toString()).questions[question_index].answers[0];
+					student_user.save();
+					if(answer===correct_answer && student_user.studentDeets.sets.find(set => set.setId.toString() == set_id.toString()).questions.filter(question => question.responses).length == student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString()).setLength){
+						// If just completed
+						student_user.studentDeets.sets.find(set => set.setId.toString() == set_id.toString()).completeDate = new Date();
+					}
+					res.json({
+						success: answer === correct_answer,
+						responses: student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString()).questions[question_index].responses
+					});
+				});
+			}else{
+				res.send('Already Completed')
+			}
+		});
+	}catch(err){
+		res.send(err)
+	}
 });
 
 // Post
@@ -255,7 +285,8 @@ router.post('/assign/:student_ids/:set_id', (req, res) => {
 			tutorId: user_id,
 			setId: set_id,
 			setLength: tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).questions.length,
-			numAnswered: 0
+			numAnswered: 0,
+			questions: Array(tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).questions.length).fill({responses: []})
 		}
 		if(!set.setLength){
 			res.status(400).json({err: 'Set must not be empty'});
@@ -274,7 +305,6 @@ router.post('/assign/:student_ids/:set_id', (req, res) => {
 						// }
 					});
 				}
-				tutor_user.save();
 			}
 			// Verbose code that updates the assigned student (student) field for the set
 			const students = tutor_user.tutorDeets.students;

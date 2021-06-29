@@ -10,7 +10,7 @@ class DeleteQuestion extends Component {
 
     onSubmit = () => {
         const question_id = this.props.question.question_id;
-        const set_id = this.props.question.set_id;
+        const set_id = this.props.set_id;
         axios.delete(`/api/tutors/set/${set_id}/${question_id}`)
         .then(res => {
             this.props.loadQuestions();

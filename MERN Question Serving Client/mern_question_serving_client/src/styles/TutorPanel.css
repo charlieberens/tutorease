@@ -343,16 +343,16 @@
   align-items: center;
   padding: 1em;
 }
-.student-list-item-left{
+.student-list-item-left, .set-performance-student-left-left{
   width: 3em;
   height: 3em;
   border-radius: 1.5em;
   margin-right: 1em;
 }
-.student-list-item-right{
+.student-list-item-right, .set-performance-student-left-right{
   text-align: left;
 }
-.student-list-item-right h3{
+.student-list-item-right h3, .set-performance-student-left-right h3{
   margin-bottom: .15em;
 }
 .student-list-pending{
@@ -383,4 +383,55 @@
 }
 .assign-student-list-item.selected{
   border: 2px solid var(--primary-1);
+}
+
+/* Performance */
+.set-performance-student{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1.5em;
+  border-radius: 10px;
+  border: 1px solid var(--grey-50);
+  margin-bottom: 1.5em;
+  position: relative;
+}
+.set-performance-student.incomplete{
+  opacity: .6; 
+}
+.set-performance-student-left{
+  display: flex;
+  align-items: center;
+}
+.set-performance-student-bar{
+  width: 1px;
+  height: 50px;
+  background: var(--grey-80);
+  margin: 0 2em;
+}
+.set-performance-student-right{
+  text-align: center;
+}
+
+/* Review */
+.tutor-rev-question{
+  width: 30em;
+  max-width: 100%;
+  padding: 2rem;
+}
+.tutor-rev-answer-block{
+  list-style: none;
+}
+.tutor-rev-answer{
+  display: flex;
+  padding: .5rem;
+}
+.tutor-rev-answer.incorrect{
+  background: red;
+}
+.tutor-rev-answer.correct{
+  background: green;
+}
+.tutor-rev-answer-text{
+  color: var(--grey-50);
 }

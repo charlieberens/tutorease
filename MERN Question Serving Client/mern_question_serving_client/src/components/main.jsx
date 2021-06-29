@@ -42,7 +42,7 @@ class Main extends Component {
 							<Link to="/">Home</Link>
 							{this.state.user.tutor && <Link to="/app/tutor">Tutor</Link>}
 							{this.state.user.student && <Link to="/app/student">Student</Link>}
-							<Link to="/app/profile">Profile</Link>
+							<Link to={`/app/profile/${this.state.user.username}`}>Profile</Link>
 							<Link to="/login">Log In</Link>
 		            	</div>
 		            	<div className="nav-right">
@@ -60,8 +60,8 @@ class Main extends Component {
 						<Route path="/app/student">
 							<StudentPanel/>
 						</Route>
-						<Route path="/app/profile">
-							<Profile/>
+						<Route path="/app/profile/:username">
+							<Profile current_user={this.state.user}/>
 						</Route>
 					</Switch>
 	            </div>

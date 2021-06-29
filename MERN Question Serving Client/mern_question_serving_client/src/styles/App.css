@@ -65,15 +65,22 @@ input, textarea, input::placeholder, textarea::placeholder{
 a{
   text-decoration: none;
   color: inherit;
+  cursor: pointer;
 }
 .inline-a{
   color: var(--primary-1);
   border-bottom: 1px transparent solid;
-  cursor: pointer;
 }
 .inline-a:hover{
   color: var(--primary-2);
   border-bottom: 1px var(--primary-2) solid;
+}
+.grey-a{
+  color: var(--grey-50);
+}
+.grey-a:hover{
+  color: var(--grey-20);
+  border-bottom-color: var(--grey-20);
 }
 
 /* Default Styles */
@@ -181,58 +188,13 @@ input[type=text]{
 .close-cancel-cont *:nth-child(1){
   margin-right: .5em;
 }
-.popup-error-message-cont{
+.err-cont{
   margin-bottom: 1em;
 }
-.popup-error-message{
+.err{
   color: var(--red-50);
   font-size: 85%;
   font-style: italic;
-}
-
-/* Questions  */
-.question{
-  width: 30em;
-  max-width: 100%;
-  padding: 2rem;
-}
-.question-body{
-  /*font-size: 14px;*/
-}
-.answer-block{
-  list-style: none;
-  max-width: 15em;
-}
-.answer{
-  display: flex;
-  align-items: center;
-  padding: .5rem;
-  cursor: pointer;
-}
-.answer:hover .answer-letter-outer{
-  background: var(--primary-1);
-}
-.answer:hover .answer-text{
-  color:  var(--grey-20);
-}
-.answer-letter-outer{
-  width: 1.5em;
-  height: 1.5em;
-  background: var(--grey-80);
-  display: grid;
-  align-content: center;
-  border-radius: 50%;
-}
-.answer-letter-inner{
-  font-size: 80%;
-  text-align: center;
-  color:  white;
-  /*transform: translateY(-1px);*/
-  text-transform: uppercase;
-}
-.answer-text{
-  color:  var(--grey-50);
-  margin-left: 1em;
 }
 
 /* Nav */

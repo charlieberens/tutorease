@@ -34,8 +34,9 @@ class AssignSet extends Component {
     	students = students.map(student => student._id);
         axios.post(`/api/students/assign/${students.join(',')}/${this.props.set_id}`).then(res => {
             this.props.popupMethod();
+            this.props.loadMethod();
         }).catch(err => {
-            this.setState({error_message: err.response.data.err});
+            this.setState({error_message: err.response?.data.err});
         });
     }
 
@@ -43,8 +44,8 @@ class AssignSet extends Component {
 		return (
 			<div className="assign-student-list">
                 <h2>Assign <em>{this.props.set_title}</em> to:</h2>
-                <div className="popup-error-message-cont">
-                    <span className="popup-error-message">{this.state.error_message}</span>
+                <div className="err-cont">
+                    <span className="err">{this.state.error_message}</span>
                 </div>
                 {this.state.students.map((student, index) => 
                     <div className={`student-list-item student-list-student assign-student-list-item ${student.selected && 'selected'}`} onClick={() => this.selectStudent(index)}>

@@ -19,7 +19,8 @@ class CreateQuestion extends Component {
         this.state = {
 	      body: '',
 	      mcq: true,
-	      answers:['']
+	      answers:[''],
+          err: null
 	    };
     }
 
@@ -70,6 +71,7 @@ class CreateQuestion extends Component {
             this.props.loadMethod();
         })
         .catch(err => {
+            this.setState({err: err.response?.data.err})
             console.log(err)
         });
     }
@@ -78,6 +80,9 @@ class CreateQuestion extends Component {
         return (
             <form className="create-question-form">
               	<h1>Create Question</h1>
+                <div className="err-cont">
+                    <span className="err">{this.state.err}</span>
+                </div>
                 {/* <SetDropdown popupMethod={this.props.popupMethod} updateLoadSets={this.props.updateLoadSets}/> */}
             	<textarea className="create-question-body" name="body" value={this.state.body} onChange={this.onChange}></textarea>
             	<Switch onChange={this.onSwitch} checked={this.state.mcq} />

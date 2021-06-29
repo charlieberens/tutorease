@@ -26,6 +26,31 @@ router.get('/', checkUserLoggedIn, (req, res) => {
 	});
 });
 
+// Get user profile
+router.get('/profile/:username', async (req,res) => {
+	const user_id = req.session?.passport?.user;
+	const username = req.params.username;
+	try{
+		const user = await User.findOne({username: username});
+		if(user){
+			console.log(user)
+			res.json({
+				profileIcon: user.profileIcon,
+				displayName: user.displayName,
+				bio: 'Bios coming soon',
+				tutor: user.tutor,
+				student: user.student,
+				startDate: user.startDate,
+				isCurrentUser: user._id.toString() === user_id.toString()
+			})
+		}else{
+			res.send({err: 'User does not exist!'})
+		}
+	}catch(err){
+		res.statusCode(400).send({err: err.toString()});
+	}
+});
+
 // Put
 router.put('/put/', (req, res) => {
 	const user_id = req.session.passport.user;

@@ -67,7 +67,7 @@ class TutorPanel extends Component {
 			    					<AssignSet/>
 			    				</Route>
 			        			<Route path={`${base_path}/sets/:id`}>
-			    					<Set updateLoadSets={this.updateLoadSets}/>
+			    					<Set updateLoadSets={this.updateLoadSets} base_path={`${base_path}/sets`}/>
 			    				</Route>
 			        			<Route path={`${base_path}/add-student`}>
 			    					<AddStudent tutorDeets={this.state.tutorDeets}/>

@@ -16,16 +16,14 @@ class StudentSets extends Component {
     }
 
     loadSets = async () => {
-    	try{
-    		const res = await axios('/api/students/sets');
-    		console.log(res.data.incomplete)
-    		this.setState({
-    			todo: res.data.incomplete,
-    			completed: res.data.complete
-    		})
-    	}catch(err){
-    		console.log(err)
-    	}
+        axios('/api/students/sets').then(res => {
+        	this.setState({
+        		todo: res.data.incomplete,
+        		completed: res.data.complete
+        	})
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     render() {
