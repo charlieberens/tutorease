@@ -68,7 +68,7 @@ class Set extends Component {
 						<h1>{this.state.title}</h1>
 						<a onClick={() => this.controlAssignQuestionPopup(true)}>Good Link</a>
 						<Switch>
-							<Route path={`${this.state.set_path}/performance/:student_id`}>
+							<Route path={`/app/tutor/sets/:set_id/performance/:student_username`}>
 								<ReviewPerformance set_id={this.props.match.params.id} set={{questions: this.state.questions}} base_path={`${this.props.base_path}/${this.props.match.params.id}/performance`}/>
 							</Route>
 							<Route path={`${this.state.set_path}/performance`}>

@@ -1,0 +1,56 @@
+.profile-inner{
+	border-radius: 10px;
+	box-shadow: 1px 1px 10px rgba(0,0,0,.2);
+	border: 1px solid var(--grey-90);
+	width: 400px;
+	max-width: 100%;
+	position: relative;
+}
+.profile-top{
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	padding: 2em 2em 1em;
+}
+.profile-icon{
+	width: 6em;
+	height: 6em;
+	border-radius: 3em;
+	margin-bottom: 1em;
+	border: 2px solid white;
+}
+.profile-bio{
+	text-align: center;
+	padding: 1em 2em 2em;
+}
+.profile-bio p {
+	margin-bottom: 0;
+	width: 35ch;
+	text-align: left;
+}
+.profile-bottom{
+	padding: 1em 2em;
+	text-align: center;
+	color: white;
+	background: var(--primary-1);
+	border-bottom-right-radius: 10px; 
+	border-bottom-left-radius: 10px; 
+}
+.edit-profile-icon-outer{
+	position: absolute;
+	top: 1em;
+	right: 1em;
+	box-shadow: 2px 2px 6px rgba(0,0,0,.2);
+	color: white;
+	background: var(--primary-1);
+	display: flex;
+	height: 1.5em;
+	width: 1.5em;
+	border-radius: .75em;
+	justify-content: center;
+	align-items: center;
+}
+.edit-profile-icon{
+	width:.75em;
+	height:.75em;
+}

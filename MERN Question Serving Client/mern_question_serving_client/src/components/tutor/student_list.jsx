@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { IoAddCircle } from "react-icons/io5";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 class StudentList extends Component {
@@ -34,22 +34,22 @@ class StudentList extends Component {
             <div className="student-list-module">
                 <div className="student-list">
                     {this.state.students.map((student, index) => 
-                        <div className="student-list-item student-list-student">
+                        <Link to={`/app/profile/${student.username}`} className="student-list-item student-list-student">
                             <img className="student-list-item-left" src={student.profileIcon}/>
                             <div className="student-list-item-right">
                                 <h3 className="student-list-student-displayName">{student.displayName}</h3>
                                 <span className="student-list-student-username">@{student.username}</span>
                             </div>
-                        </div>
+                        </Link>
                     )}
                     {this.state.pendingStudents.map((student, index) => 
-                        <div className="student-list-item student-list-pending">
+                        <Link to={`/app/profile/${student.username}`} className="student-list-item student-list-pending">
                             <img className="student-list-item-left" src={student.profileIcon}/>
                             <div className="student-list-item-right">
                                 <h3 className="student-list-student-displayName">{student.displayName}</h3>
                                 <span className="student-list-student-username">@{student.username}</span>
                             </div>
-                        </div>
+                        </Link>
                     )}
                 </div>
                 <div className="student-list-module-bottom">

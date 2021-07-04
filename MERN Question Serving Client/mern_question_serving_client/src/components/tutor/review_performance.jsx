@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import Latex from 'react-latex';
 
 class ReviewPerformance extends Component {
     constructor(props) {
@@ -19,18 +20,11 @@ class ReviewPerformance extends Component {
     }
 
     loadStudentAnswers = async () => {
+    	console.log(this.props.match.params)
     	try{
-    		const res = await axios.get(`/api/tutors/set_answers/${this.props.set_id}/${this.props.match.params.student_id}`);
-    		let embiggened_questions = [];
-    		res.data.questions.forEach((question, index) => {
-    			embiggened_questions.push({
-    				responses: question.responses,
-    				question: this.props.set.questions[index]
-    			});
-    		});
-    		console.log({embiggened_questions})
+    		const res = await axios.get(`/api/tutors/set_answers/${this.props.match.params.set_id}/${this.props.match.params.student_username}`);
     		this.setState({
-    			questions: embiggened_questions
+    			questions: res.data.embiggened_questions
     		});
     	}catch(err){
     		console.log(err);
@@ -46,7 +40,11 @@ class ReviewPerformance extends Component {
 	            	{this.state.questions.map((question, index) => (
 			            <div className="tutor-rev-question">
 			            	<span className="tutor-rev-question-index">{index+1}.</span>
-			            	<p className="tutor-rev-question-body">{question.question.body}</p>
+			            	<div className="tutor-rev-question-body">
+								{question.question.body.split('\n').filter(section => section).map(textFragment => 
+	                       			<p><Latex>{textFragment}</Latex></p>
+	                   			)}
+			            	</div>
 			            	<ul className='tutor-rev-answer-block'>
 			            		{question.responses.map((response, index) => (
 			            			<li key={index} className={`tutor-rev-answer ${index < (question.responses.length - 1) ? 'incorrect' : 'correct' }`}>

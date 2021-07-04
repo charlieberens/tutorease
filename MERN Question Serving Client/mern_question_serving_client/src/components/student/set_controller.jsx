@@ -46,6 +46,7 @@ class SetController extends Component {
     			},
     			loading: false
     		})
+    		console.log({set_controller: this.state})
     	}).catch(err => {
     		console.log(err);
     	});

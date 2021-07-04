@@ -4,11 +4,15 @@ import StudentPanel from './student/student_panel'
 import Profile from './profile/profile'
 import axios from 'axios';
 import SetController from './student/set_controller'
+import ProfileController from './profile/profile_controller'
+import Setup from './auth/setup'
+import Footer from './footer'
 import {
 	BrowserRouter as Router,
 	Switch,
 	Route,
-	Link
+	Link,
+	Redirect
 } from "react-router-dom";
 
 class Main extends Component {
@@ -23,9 +27,21 @@ class Main extends Component {
     	this.getUser();
     }
 
+    componentDidUpdate(){
+    	try{
+			document.documentElement.style.setProperty('--nav-height', document.getElementsByTagName('nav')[0].offsetHeight + 'px');
+	    	document.documentElement.style.setProperty('--footer-height', document.getElementsByClassName('footer')[0].offsetHeight + 'px');
+    	}catch(err){
+    		console.log(err);
+    	}
+    }
+
     getUser = () => {
 		axios.get('/api/users/').then(res => {
 			this.setState({user: res.data})
+			if(!res.data.username | !res.data.displayName | !(res.data.tutor | res.data.student)){
+                window.location.replace("/app/setup");
+			}
 		}).catch(err => {
             if(err.response.status == 401){
                 window.location.replace("/login");
@@ -42,28 +58,35 @@ class Main extends Component {
 							<Link to="/">Home</Link>
 							{this.state.user.tutor && <Link to="/app/tutor">Tutor</Link>}
 							{this.state.user.student && <Link to="/app/student">Student</Link>}
-							<Link to={`/app/profile/${this.state.user.username}`}>Profile</Link>
-							<Link to="/login">Log In</Link>
+							<a href="/auth/logout">Log Out</a>
 		            	</div>
 		            	<div className="nav-right">
-		            		<img className="nav-profile-icon" src={this.state.user?.profileIcon}/>
+		            		<Link to={`/app/profile/${this.state.user.username}`}><img className="nav-profile-icon" src={this.state.user?.profileIcon}/></Link>
 		            	</div>
 		            </nav>
-
-					<Switch>
-						<Route path="/app/tutor">
-							<TutorPanel/>
-						</Route>
-						<Route path="/app/student/:set_id">
-							<SetController/>
-						</Route>
-						<Route path="/app/student">
-							<StudentPanel/>
-						</Route>
-						<Route path="/app/profile/:username">
-							<Profile current_user={this.state.user}/>
-						</Route>
-					</Switch>
+		            <div className="main-inner">	            	
+						<Switch>
+							<Route path="/app/tutor">
+								<TutorPanel/>
+							</Route>
+							<Route path="/app/student/:set_id">
+								<SetController/>
+							</Route>
+							<Route path="/app/student">
+								<StudentPanel/>
+							</Route>
+							<Route path="/app/profile/">
+								<ProfileController current_user={this.state.user}/>
+							</Route>
+							<Route path="/app/setup">
+								<Setup user={this.state.user}/>
+							</Route>
+							<Route path="/app/">
+								<Redirect to={`/app/${this.state.user.tutor ? 'tutor' : (this.state.user.student ? 'student' : 'setup')}`}/>
+							</Route>
+						</Switch>
+		            </div>
+					<Footer/>
 	            </div>
 	        );
     	}else{

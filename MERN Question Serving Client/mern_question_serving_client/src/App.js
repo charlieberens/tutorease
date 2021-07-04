@@ -6,6 +6,7 @@ import Home from './components/home'
 import Login from './components/auth/login'
 import StudentTutorSelect from './components/auth/student_tutor_select';
 import Username from './components/auth/username';
+import Page404 from './components/page_404';
 
 import {
 	BrowserRouter as Router,
@@ -38,8 +39,11 @@ class App extends Component {
 						<Route path="/app/">
 							<Main/>
 						</Route>
-						<Route path="/">
+						<Route exact path="/">
 							<Home/>
+						</Route>
+						<Route path="/">
+							<Page404/>
 						</Route>
 					</Switch>
 				</Router>

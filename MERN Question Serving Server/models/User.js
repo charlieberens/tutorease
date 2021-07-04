@@ -79,10 +79,9 @@ const UserSchema = mongoose.Schema({
 	username: {
 		type: String
 	},
-	// username: {
-	// 	type:String,
-	// 	required: true
-	// },
+	bio: {
+		type:String
+	},
 	googleId: {
 		type: String,
 		required: true
@@ -103,10 +102,6 @@ const UserSchema = mongoose.Schema({
 	},
 	studentDeets: StudentSchema,
 	tutorDeets: TutorSchema,
-	// // secret: {
-	// // 	type: String,
-	// // 	required: true
-	// // },
 	startDate: {
 		type: Date,
 		default: Date.now

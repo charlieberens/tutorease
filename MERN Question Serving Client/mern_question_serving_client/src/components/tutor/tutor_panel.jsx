@@ -59,34 +59,32 @@ class TutorPanel extends Component {
     render() {
     	if(this.state.tutorDeets){
 	        return (
-	            <div>
-	            	<div className="tutor-panel-outer">
-	            		<div className="tutor-panel-inner">
-			        		<Switch>
-			        			<Route path={`${base_path}/sets/assign/:id`}>
-			    					<AssignSet/>
-			    				</Route>
-			        			<Route path={`${base_path}/sets/:id`}>
-			    					<Set updateLoadSets={this.updateLoadSets} base_path={`${base_path}/sets`}/>
-			    				</Route>
-			        			<Route path={`${base_path}/add-student`}>
-			    					<AddStudent tutorDeets={this.state.tutorDeets}/>
-			    				</Route>
-			    				<Route path={base_path}>
-			    					<div className="tutor-panel-main">
-				    					<div className="tutor-panel-left">
-				    						<SetList/>
-				    					</div>
-				    					<div className="tutor-panel-right">
-				    						<h2>Students</h2>
-				    						<StudentList tutorDeets={this.state.tutorDeets}/>
-				    					</div>
+            	<div className="tutor-panel-outer">
+            		<div className="tutor-panel-inner">
+		        		<Switch>
+		        			<Route path={`${base_path}/sets/assign/:id`}>
+		    					<AssignSet/>
+		    				</Route>
+		        			<Route path={`${base_path}/sets/:id`}>
+		    					<Set updateLoadSets={this.updateLoadSets} base_path={`${base_path}/sets`}/>
+		    				</Route>
+		        			<Route path={`${base_path}/add-student`}>
+		    					<AddStudent tutorDeets={this.state.tutorDeets}/>
+		    				</Route>
+		    				<Route path={base_path}>
+		    					<div className="tutor-panel-main">
+			    					<div className="tutor-panel-left">
+			    						<SetList/>
 			    					</div>
-			    				</Route>
-			        		</Switch>
-		        		</div>
+			    					<div className="tutor-panel-right">
+			    						<h2>Students</h2>
+			    						<StudentList tutorDeets={this.state.tutorDeets}/>
+			    					</div>
+		    					</div>
+		    				</Route>
+		        		</Switch>
 	        		</div>
-	            </div>
+        		</div>
 	        );
     	}else{
     		return(

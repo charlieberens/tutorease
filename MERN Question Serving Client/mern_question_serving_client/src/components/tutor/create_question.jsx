@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import Switch from "react-switch";
+// import Switch from "react-switch";
 import SetDropdown from './set_dropdown.jsx'
+import MathTextarea from './math_textarea.jsx'
 import { IoClose, IoAddCircle } from "react-icons/io5";
 import axios from 'axios';
+import Latex from 'react-latex';
+import { withRouter } from 'react-router-dom';
 
 const maxAnswers = 8;
 
@@ -67,8 +70,8 @@ class CreateQuestion extends Component {
             mcq: this.state.mcq
         })
         .then(res => {
-            this.props.popupMethod(false);
-            this.props.loadMethod();
+            window.location.replace(`/app/tutor/sets/${this.props.set_id}`);
+            // this.props.loadMethod();
         })
         .catch(err => {
             this.setState({err: err.response?.data.err})
@@ -84,19 +87,23 @@ class CreateQuestion extends Component {
                     <span className="err">{this.state.err}</span>
                 </div>
                 {/* <SetDropdown popupMethod={this.props.popupMethod} updateLoadSets={this.props.updateLoadSets}/> */}
-            	<textarea className="create-question-body" name="body" value={this.state.body} onChange={this.onChange}></textarea>
-            	<Switch onChange={this.onSwitch} checked={this.state.mcq} />
+            	<MathTextarea className="create-question-body" value={this.state.body} change={this.onChange} name='body'/>
+            	{/* <Switch onChange={this.onSwitch} checked={this.state.mcq} /> */}
                 {/*Renders MCQ*/}
             	{this.state.mcq && 
             		<div>
             			{/* Renders first answer*/}
-            			<div className="create-question-answer-outer"><input type="text" name="create-question-answer-0" className="create-question-answer first-answer" onChange={this.onChange} answerindex={0} autocomplete="off"/></div>
+            			<div className="create-question-answer-outer">
+                            <input type="text" name="create-question-answer-0" className="create-question-answer first-answer" onChange={this.onChange} answerindex={0} autocomplete="off"/>
+                            <div className="create-question-answer-preview"><Latex>{this.state.answers[0]}</Latex></div>
+                        </div>
 
             			{/* Renders all answers but the first*/}
 	            		{this.state.answers.slice(1).map((answer, index) => 
 	            			<div key={index} className="create-question-answer-outer">
+                                <a className="remove-answers close" name="remove-answers" answerindex={index+1} onClick={() => this.onAnswerChange(false,index+1)}><IoClose/></a>
 	            				<input type="text" name={'create-question-answer' + (index+1)} value={this.state.answers[index+1]} answerindex={index+1} className="create-question-answer" onChange={this.onChange} autocomplete="off"/>
-	            				<a className="remove-answers close" name="remove-answers" answerindex={index+1} onClick={() => this.onAnswerChange(false,index+1)}><IoClose/></a>
+	            				<div className="create-question-answer-preview"><Latex>{this.state.answers[index+1]}</Latex></div>
             				</div>)}
 
 	            		{/* Creates + button and removes it when max answers is reached */}
@@ -115,4 +122,4 @@ class CreateQuestion extends Component {
 
 }
 
-export default CreateQuestion;
+export default withRouter(CreateQuestion);

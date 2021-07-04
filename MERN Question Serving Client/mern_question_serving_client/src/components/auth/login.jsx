@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {FcGoogle} from "react-icons/fc";
-import {IoArrowBack} from "react-icons/io5";
+import Back from "../back";
 import axios from 'axios';
 import '../../styles/auth.css'
 
@@ -18,7 +18,7 @@ class Login extends Component {
     checkLogin = () => {
         axios.get('/api/users/').then(res => {
             if(res.data){
-                window.location.replace("/app/profile");
+                window.location.replace("/app/");
             }
         });
     }
@@ -26,7 +26,7 @@ class Login extends Component {
     render() {
         return (
             <div className="login-page">
-                <IoArrowBack className="login-back-arrow" onClick={() => this.props.history.goBack()}/>
+                <Back/>
                 <a className="sign-in-with-google button" href="/auth/google"><FcGoogle className="sign-in-with-google-icon"/><span>Sign in with Google</span></a>
             </div>
         );

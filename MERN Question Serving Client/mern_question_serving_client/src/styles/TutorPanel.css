@@ -2,7 +2,6 @@
 .tutor-panel-outer{
   display: flex;
   justify-content: center;
-  margin-top: 1.5em;
 }
 .tutor-panel-inner{
   max-width: 1000px;
@@ -423,15 +422,14 @@
   list-style: none;
 }
 .tutor-rev-answer{
-  display: flex;
   padding: .5rem;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
 }
 .tutor-rev-answer.incorrect{
   background: red;
 }
 .tutor-rev-answer.correct{
-  background: green;
-}
-.tutor-rev-answer-text{
-  color: var(--grey-50);
+  background: var(--green-50);
 }

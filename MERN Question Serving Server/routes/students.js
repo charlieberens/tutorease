@@ -172,11 +172,17 @@ router.get('/set/:set_id', (req, res) => {
 				const student_set = student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString());
 				User.findById(student_set.tutorId, (err, tutor_user) => {
 					const tutor_set = tutor_user.tutorDeets.sets.find(set => set._id.toString() === set_id.toString());
+					console.log(tutor_set.questions.map((question, index) => ({...question, answers: common.shuffle(question.answers), responses: student_set.questions[index].responses})))
 					res.json({
 						completed: (tutor_set.questions.length <= student_set.questions.filter(question => question.responses.length).length),
 						numAnswered: student_set.questions.filter(question => question.responses?.length).length,
 						id: tutor_set._id,
-						questions: tutor_set.questions.map((question, index) => ({...question, answers: common.shuffle(question.answers), responses: student_set.questions[index].responses})),
+						questions: tutor_set.questions.map((question, index) => ({
+							body: question.body,
+							mcq: question.mcq,
+							answers: common.shuffle(question.answers),
+							responses: student_set.questions[index].responses
+						})),
 						title: tutor_set.title,
 						description: tutor_set.description,
 						date: tutor_set.date,
@@ -291,33 +297,34 @@ router.post('/assign/:student_ids/:set_id', (req, res) => {
 		if(!set.setLength){
 			res.status(400).json({err: 'Set must not be empty'});
 		}else{
-			for(student_id of student_ids){
-				if(tutor_user.tutorDeets.students.includes(student_id)){
-					User.findById(student_id, (err, student_user) => {
-						// if(tutor_user.tutorDeets.sets.some(set => set._id === set_id)){
-						if(!student_user.studentDeets.sets.filter(qset => qset.setId == set_id).length){//Only adds set if set not already present
-							student_user.studentDeets.sets.push(set);
-							student_user.save()
-							.catch(err => {
-								res.send(err);
-							});
-						}
-						// }
-					});
+			try{
+				for(student_id of student_ids){
+					if(tutor_user.tutorDeets.students.includes(student_id)){
+						User.findById(student_id, (err, student_user) => {
+							// if(tutor_user.tutorDeets.sets.some(set => set._id === set_id)){
+							if(!student_user.studentDeets.sets.filter(qset => qset.setId == set_id).length){//Only adds set if set not already present
+								student_user.studentDeets.sets.push(set);
+								student_user.save().catch(err => console.log(err));
+							}
+							// }
+						});
+					}
 				}
+				// Verbose code that updates the assigned student (student) field for the set
+				const students = tutor_user.tutorDeets.students;
+				const assignedStudents = tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).students;
+				const valid_students = student_ids.filter(student_id => {
+					return students.includes(student_id)
+				});
+				const new_students = valid_students.filter(student_id => {
+					return !assignedStudents.includes(student_id)
+				})
+				tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).students.push(...new_students);
+				tutor_user.save();
+				res.sendStatus(200);
+			}catch(err){
+				res.send(err)
 			}
-			// Verbose code that updates the assigned student (student) field for the set
-			const students = tutor_user.tutorDeets.students;
-			const assignedStudents = tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).students;
-			const valid_students = student_ids.filter(student_id => {
-				return students.includes(student_id)
-			});
-			const new_students = valid_students.filter(student_id => {
-				return !assignedStudents.includes(student_id)
-			})
-			tutor_user.tutorDeets.sets.find(qset => qset._id == set_id).students.push(...new_students);
-			tutor_user.save();
-			res.sendStatus(200);
 		}
 	}).catch(err =>{
 		send(err);

@@ -24,15 +24,6 @@
 	height: 2em;
 	margin-right: 1em;
 }
-.login-back-arrow{
-	color: white;
-	width: 1.5em;
-	height: 1.5em;
-	top: 2em;
-	left: 2em;
-	position: absolute;
-	cursor:  pointer;
-}
 
 /* Set Username */
 .choose-username-outer{
@@ -123,4 +114,10 @@
 	width: 2.5em;
 	height: 2.5em;
 	color: var(--primary-1);
+}
+
+/* Bio */
+.choose-bio-input{
+	min-width: 35ch;
+	max-width: 35ch;
 }

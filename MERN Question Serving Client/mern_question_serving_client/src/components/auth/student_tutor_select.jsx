@@ -15,6 +15,13 @@ class StudentTutorSelect extends Component {
         }
     }
 
+    componentDidMount = () => {
+    	this.setState({
+    		studentSelected: this.props.user.student,
+    		tutorSelected: this.props.user.tutor  		
+    	})
+    }
+
     flipSelect = student => {
     	if(student){
     		this.setState(state => ({
@@ -30,11 +37,11 @@ class StudentTutorSelect extends Component {
     sendRoleSelect = e => {
     	e.preventDefault();
 
-    	axios.post('/api/users/roles/', {
+    	axios.post('/api/users/put/', {
     		tutor: this.state.tutorSelected,
     		student: this.state.studentSelected
     	}).then(res => {
-			this.props.history.push("/app/profile");
+			this.props.history.push("/app/setup/username");
     	}).catch(err => {
     		console.log(err);
     	});

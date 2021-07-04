@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
+import Latex from 'react-latex';
 
 const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
@@ -7,7 +8,6 @@ class Question extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        	body: "",
         	answers: [],
             incorrectAnswers: [], //Indecies
             selected: null,
@@ -58,17 +58,22 @@ class Question extends Component {
     }
 
     render() {
+        console.log(this.props)
         if(!this.props.review){
             return (
                 <div className="question">
-                	<p className="question-body">{this.props.question?.body}</p>
+                	<div className="question-body">
+                        {this.props.question?.body?.split('\n').filter(section => section).map(textFragment => 
+                            <p><Latex>{textFragment}</Latex></p>
+                        )}      
+                    </div>
                 	<ul className={`answer-block  ${this.state.correct ? 'correct' : ''}`}>
                 		{ this.props.question?.answers.map((answer, index) => 
                 			<li key={index} className={`answer ${this.state.selected === index ? 'selected' : ''} ${this.state.incorrectAnswers.includes(index) ? 'incorrect' : ''}`} onClick={!this.state.incorrectAnswers.includes(index) && (() => this.selectAnswer(index))}>
                 				<div className="answer-letter-outer">
                 					<span className="answer-letter-inner">{alphabet[index]}</span>
             					</div>
-            					<div className="answer-text">{answer}</div>
+            					<div className="answer-text"><Latex>{answer}</Latex></div>
         					</li>) }
                 	</ul>
                     <button className="button-a" onClick={this.state.correct ? this.nextQuestion : this.checkAnswer} disabled={this.state.selected === null}>{this.state.correct ? 'Next' : 'Submit'}</button>
@@ -77,17 +82,21 @@ class Question extends Component {
         }else{
             return (
                 <div className="question review">
-                    <p className="question-body">{this.props.question?.body}</p>
+                    <div className="question-body">
+                        {this.props.question?.body?.split('\n').filter(section => section).map(textFragment => 
+                            <p><Latex>{textFragment}</Latex></p>
+                        )}      
+                    </div>
                     <ul className={`answer-block  ${this.state.correct ? 'correct' : ''}`}>
                         { this.props.question?.answers.map((answer, index) => 
                             <li key={index} className={`answer ${this.state.selected === index ? 'selected' : ''} ${this.state.incorrectAnswers.includes(index) ? 'incorrect' : ''}`} onClick={!this.state.incorrectAnswers.includes(index) && (() => this.selectAnswer(index))}>
                                 <div className="answer-letter-outer">
                                     <span className="answer-letter-inner">{alphabet[index]}</span>
                                 </div>
-                                <div className="answer-text">{answer}</div>
+                                <div className="answer-text"><Latex>{answer}</Latex></div>
                             </li>) }
                     </ul>
-                    <button className="button-a" onClick={this.prevQuestion} disabled={this.state.question_index > 0}>Previous</button>
+                    <button className="button-a" onClick={this.prevQuestion} disabled={this.state.question_index < 1}>Previous</button>
                     <button className="button-a" onClick={this.nextQuestion} >{(this.props.question_index + 1) < this.props.set_length ? 'Next' : 'Finish'}</button>
                 </div>
             );

@@ -78,20 +78,53 @@ router.get('/set/:set_id', async (req, res) => {
 	}
 })
 // Get student's answers
-router.get('/set_answers/:set_id/:student_id', async (req, res) => {
+router.get('/set_answers/:set_id/:student_username', async (req, res) => {
 	try{
 		const user_id = req.session.passport.user;
 		const set_id = req.params.set_id;
-		const student_id = req.params.student_id;
+		const student_username = req.params.student_username;
+		const student_user = await User.findOne({username: student_username});
 		const tutor_user = await User.findById(user_id);
-		if(tutor_user.tutorDeets.students.includes(student_id)){
-			const student_user = await User.findById(student_id);
-			res.json({questions: student_user.studentDeets.sets.find(set => set.setId.toString() === set_id).questions});
+		let embiggened_questions = [];
+		student_user.studentDeets.sets.find(set => set.setId.toString() === set_id).questions.forEach((question, index) => {
+			embiggened_questions.push({
+				responses: question.responses,
+				question: tutor_user.tutorDeets.sets.find(set => set._id.toString() === set_id.toString()).questions[index]
+			});
+		});
+		if(tutor_user.tutorDeets.students.includes(student_user._id)){
+			res.json({embiggened_questions});
 		}
 	}catch(err){
 		console.log(err)
-		res.statusCode(400).send(err);
+		res.status(400).send(err);
 	}
+});
+router.get('/get-student-performance/sets/:student_username', async (req, res) => {
+	// try{
+		const user_id = req.session.passport.user;
+		const student_username = req.params.student_username;
+		const student_user = await User.findOne({username: student_username});
+		const tutor_user = await User.findById(user_id);
+		if(tutor_user.tutorDeets.students.includes(student_user._id) && student_user.student){
+			res.json({
+    			displayName: student_user.displayName,
+    			profileIcon: student_user.profileIcon,
+    			sets: student_user.studentDeets.sets.filter(set => tutor_user.tutorDeets.sets.map(tset => tset._id.toString()).includes(set.setId.toString())).map(set => ({
+    				id: set.setId,
+    				setLength: set.setLength,
+    				numCorrect: set.questions.filter(question => question.responses.length).length,
+    				completeDate: set.completeDate,
+    				title: tutor_user.tutorDeets.sets.find(tset => tset._id.toString() === set.setId.toString())?.title
+    			})),
+    			noAuth: false
+			})
+		}else{
+			res.json({noAuth: true});
+		}
+	// }catch(err){
+	// 	res.send(err)
+	// }
 });
 
 // ---------------------- Post ---------------------------

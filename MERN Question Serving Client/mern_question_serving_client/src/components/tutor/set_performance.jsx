@@ -31,7 +31,7 @@ class SetPerformance extends Component {
 										<span>{student.numCorrect}</span> out of <span>{this.props.set.questions.length}</span>
 									</div>
 									<div className="set-performance-student-right-bottom">
-										<Link className="grey-a" to={`${this.props.base_path}/${student.id}`}>Details</Link>
+										<Link className="grey-a" to={`${this.props.base_path}/${student.username}`}>Details</Link>
 									</div>
 								</div>
 								:
