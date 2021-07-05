@@ -114,6 +114,11 @@
   color: var(--grey-20);
 }
 
+/* Create Question Preview  */
+.create-question-preview-body p{
+  text-align: left;
+}
+
 /* Micro Popup */
 .micro-popup{
   background: white;

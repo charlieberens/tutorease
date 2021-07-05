@@ -149,7 +149,6 @@ router.get('/sets', async (req, res) => {
 							setId: set._id,
 							numAnswered: sets.find(qset => qset.setId.toString() === set._id.toString()).questions.filter(question => question.responses.length).length
 						});
-						console.log(i, embiggened_sets)
 					}
 				}
 			})
@@ -172,7 +171,8 @@ router.get('/set/:set_id', (req, res) => {
 				const student_set = student_user.studentDeets.sets.find(set => set.setId.toString() === set_id.toString());
 				User.findById(student_set.tutorId, (err, tutor_user) => {
 					const tutor_set = tutor_user.tutorDeets.sets.find(set => set._id.toString() === set_id.toString());
-					console.log(tutor_set.questions.map((question, index) => ({...question, answers: common.shuffle(question.answers), responses: student_set.questions[index].responses})))
+					console.log({student_set: student_set.questions[0].responses})
+					console.log({tutor_set: tutor_set.questions})
 					res.json({
 						completed: (tutor_set.questions.length <= student_set.questions.filter(question => question.responses.length).length),
 						numAnswered: student_set.questions.filter(question => question.responses?.length).length,
@@ -188,7 +188,7 @@ router.get('/set/:set_id', (req, res) => {
 						date: tutor_set.date,
 						tutorIcon: tutor_user.profileIcon,
 						tutorName: tutor_user.displayName,
-						tutorUsername: tutor_user.username						
+						tutorUsername: tutor_user.username
 					}) 
 				}).catch(err =>{
 					res.send(err);
@@ -323,10 +323,12 @@ router.post('/assign/:student_ids/:set_id', (req, res) => {
 				tutor_user.save();
 				res.sendStatus(200);
 			}catch(err){
+				console.log({2: err})
 				res.send(err)
 			}
 		}
 	}).catch(err =>{
+		console.log({1: err})
 		send(err);
 	})
 });

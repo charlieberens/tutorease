@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
+import RenderQuestionBody from '../render_question_body';
 import Latex from 'react-latex';
 
 const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -62,11 +63,9 @@ class Question extends Component {
         if(!this.props.review){
             return (
                 <div className="question">
-                	<div className="question-body">
-                        {this.props.question?.body?.split('\n').filter(section => section).map(textFragment => 
-                            <p><Latex>{textFragment}</Latex></p>
-                        )}      
-                    </div>
+                	<RenderQuestionBody className="question-body">
+                        {this.props.question?.body}
+                    </RenderQuestionBody>
                 	<ul className={`answer-block  ${this.state.correct ? 'correct' : ''}`}>
                 		{ this.props.question?.answers.map((answer, index) => 
                 			<li key={index} className={`answer ${this.state.selected === index ? 'selected' : ''} ${this.state.incorrectAnswers.includes(index) ? 'incorrect' : ''}`} onClick={!this.state.incorrectAnswers.includes(index) && (() => this.selectAnswer(index))}>

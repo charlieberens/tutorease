@@ -8,6 +8,7 @@ import DeleteQuestion from './delete_question';
 import AssignSet from './assign_set'
 import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
 import Latex from 'react-latex';
+import RenderQuestionBody from '../render_question_body';
 
 class SetQuestions extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ class SetQuestions extends Component {
     }
 
     render() {
+    	console.log(this.props)
 		return (
 			<Switch>
 				<Route path={`/app/tutor/sets/${this.props.id}/create-question`}>
@@ -55,17 +57,17 @@ class SetQuestions extends Component {
 								{this.props.questions.map((question, index) => 
 									<div className="question-list-item">
 										<span className="question-list-item-number">{index+1}</span>
-										<span className="question-list-item-dots" onClick={() => this.controlQuestionPopup(index, true)}>
-											<IoEllipsisVertical/>
-											{question.popupOpen &&
-	                                        	<QuestionPopup popupControl={this.controlQuestionPopup} index={index} deleteQuestion={() => this.deleteQuestion({index: index, question_id: question.id, set_id: this.state.id})}/>
-											}
-										</span>
-										<div className="question-list-item-body">
-											{question.body.split('\n').filter(section => section).map(textFragment => 
-                        						<p><Latex>{textFragment}</Latex></p>
-                    						)}
-										</div>
+										{this.props.editable &&
+											<span className="question-list-item-dots" onClick={() => this.controlQuestionPopup(index, true)}>
+												<IoEllipsisVertical/>
+												{question.popupOpen &&
+		                                        	<QuestionPopup popupControl={this.controlQuestionPopup} index={index} deleteQuestion={() => this.deleteQuestion({index: index, question_id: question.id, set_id: this.state.id})}/>
+												}
+											</span>
+										}
+										<RenderQuestionBody className="question-list-item-body">
+											{question.body}
+										</RenderQuestionBody>
 										<div className="question-list-item-answer-cont">
 										{question.answers.map((answer, i) => 
 											<div className={`question-list-item-answer ${i === 0 ? 'question-list-item-answer-right': 'question-list-item-answer-wrong'}`} >
@@ -75,9 +77,11 @@ class SetQuestions extends Component {
 										</div>
 									</div>
 								)}
-								<Link className="question-list-create" to={`/app/tutor/sets/${this.props.id}/create-question`}>
-									<IoAddCircle className="question-list-create-plus"/><span>Create Question</span>
-								</Link>
+								{this.props.editable &&
+									<Link className="question-list-create" to={`/app/tutor/sets/${this.props.id}/create-question`}>
+										<IoAddCircle className="question-list-create-plus"/><span>Create Question</span>
+									</Link>
+								}
 							</div>)
 						}
 					</div>

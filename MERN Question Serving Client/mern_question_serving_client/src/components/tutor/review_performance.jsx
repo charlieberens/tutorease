@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Latex from 'react-latex';
+import RenderQuestionBody from '../render_question_body';
 
 class ReviewPerformance extends Component {
     constructor(props) {
@@ -40,11 +41,9 @@ class ReviewPerformance extends Component {
 	            	{this.state.questions.map((question, index) => (
 			            <div className="tutor-rev-question">
 			            	<span className="tutor-rev-question-index">{index+1}.</span>
-			            	<div className="tutor-rev-question-body">
-								{question.question.body.split('\n').filter(section => section).map(textFragment => 
-	                       			<p><Latex>{textFragment}</Latex></p>
-	                   			)}
-			            	</div>
+			            	<RenderQuestionBody className="tutor-rev-question-body">
+								{question.question.body}
+			            	</RenderQuestionBody>
 			            	<ul className='tutor-rev-answer-block'>
 			            		{question.responses.map((response, index) => (
 			            			<li key={index} className={`tutor-rev-answer ${index < (question.responses.length - 1) ? 'incorrect' : 'correct' }`}>

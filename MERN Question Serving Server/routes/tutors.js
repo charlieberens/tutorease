@@ -167,16 +167,19 @@ router.post('/questions/:set_id', (req, res) => {
 	}else{
 		User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
 			// const set = tutor.sets.id(req.params.set_id);
-			tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
-			console.log('pay attention', tutor_user)
+			if(!tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).students){
+				tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
 
-			tutor_user.save() //Saves the set to the database
-			.then(data => {
-				res.sendStatus(201);
-			})
-			.catch(err => {
-				res.send(err);
-			});
+				tutor_user.save() //Saves the set to the database
+				.then(data => {
+					res.sendStatus(201);
+				})
+				.catch(err => {
+					res.send(err);
+				});
+			}else{
+				res.json({err: 'You mustn\'t edit an assigned set'})
+			}
 		});
 	}
 });

@@ -19,9 +19,10 @@ class MathTextarea extends Component {
     }
 
     onChange = e => {
-        this.setState({value: e.target.value, formattedValue: this.addLinebreaks(e.target.value)});
+        const val = this.addLinebreaks(e.target.value);
+        this.setState({value: e.target.value, formattedValue: val});
 
-        this.props.change({target: {value: this.state.formattedValue, name: this.props.name}});
+        this.props.change({target: {value: val, name: this.props.name}});
     }
 
     addLinebreaks = str => { //Adds linebreaks before block functions
@@ -36,6 +37,8 @@ class MathTextarea extends Component {
                 if(index != 0 && index != split_str.length - 2){
                     modified_section = '\n' + modified_section
                 }
+            }else{
+                modified_section = '!!block' + modified_section;
             }
             output_arr.push(modified_section);
         });
@@ -46,11 +49,6 @@ class MathTextarea extends Component {
         return (
             <div className="math-textarea-outer">
                 <textarea className="math-textarea" onChange={this.onChange} value={this.props.start_value}></textarea>
-                <div className="math-textarea-preview">
-                    {this.state.formattedValue.split('\n').filter(section => section).map(textFragment => 
-                        <p><Latex>{textFragment}</Latex></p>
-                    )}
-                </div>
             </div>
         );
     }

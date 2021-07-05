@@ -75,7 +75,7 @@ class Set extends Component {
 								<SetPerformance id={this.props.match.params.id} set={{questions: this.state.questions}} students={this.state.students} base_path={`${this.props.base_path}/${this.props.match.params.id}/performance`}/>
 							</Route>
 			    			<Route path={this.state.set_path}>
-								<SetQuestions id={this.props.match.params.id} questions={this.state.questions} loadSet={this.loadSet}/>
+								<SetQuestions id={this.props.match.params.id} questions={this.state.questions} loadSet={this.loadSet} editable={!this.state.students.length}/>
 							</Route>
 						</Switch>
 					</div>

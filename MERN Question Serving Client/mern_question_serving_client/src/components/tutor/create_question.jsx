@@ -5,6 +5,7 @@ import MathTextarea from './math_textarea.jsx'
 import { IoClose, IoAddCircle } from "react-icons/io5";
 import axios from 'axios';
 import Latex from 'react-latex';
+import RenderQuestionBody from '../render_question_body';
 import { withRouter } from 'react-router-dom';
 
 const maxAnswers = 8;
@@ -87,7 +88,7 @@ class CreateQuestion extends Component {
                     <span className="err">{this.state.err}</span>
                 </div>
                 {/* <SetDropdown popupMethod={this.props.popupMethod} updateLoadSets={this.props.updateLoadSets}/> */}
-            	<MathTextarea className="create-question-body" value={this.state.body} change={this.onChange} name='body'/>
+            	<MathTextarea className="create-question-body" change={this.onChange} name='body'/>
             	{/* <Switch onChange={this.onSwitch} checked={this.state.mcq} /> */}
                 {/*Renders MCQ*/}
             	{this.state.mcq && 
@@ -95,7 +96,6 @@ class CreateQuestion extends Component {
             			{/* Renders first answer*/}
             			<div className="create-question-answer-outer">
                             <input type="text" name="create-question-answer-0" className="create-question-answer first-answer" onChange={this.onChange} answerindex={0} autocomplete="off"/>
-                            <div className="create-question-answer-preview"><Latex>{this.state.answers[0]}</Latex></div>
                         </div>
 
             			{/* Renders all answers but the first*/}
@@ -103,7 +103,6 @@ class CreateQuestion extends Component {
 	            			<div key={index} className="create-question-answer-outer">
                                 <a className="remove-answers close" name="remove-answers" answerindex={index+1} onClick={() => this.onAnswerChange(false,index+1)}><IoClose/></a>
 	            				<input type="text" name={'create-question-answer' + (index+1)} value={this.state.answers[index+1]} answerindex={index+1} className="create-question-answer" onChange={this.onChange} autocomplete="off"/>
-	            				<div className="create-question-answer-preview"><Latex>{this.state.answers[index+1]}</Latex></div>
             				</div>)}
 
 	            		{/* Creates + button and removes it when max answers is reached */}
@@ -115,6 +114,14 @@ class CreateQuestion extends Component {
             	{!this.state.mcq &&
 	            	<input type="text" name="create-question" className="create-question-frq" onChange={this.onChange}/>
             	}
+                <div className="create-question-preview">
+                    <RenderQuestionBody className="create-question-preview-body">
+                        {this.state.body}
+                    </RenderQuestionBody>
+                    {this.state.answers.map((answer, index) => 
+                        <div className="create-question-answer-preview"><Latex>{this.state.answers[index]}</Latex></div>
+                    )}
+                </div>
             	<input type="submit" className="button-a" onClick={this.onSubmit}/>
             </form>
         );

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+ import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 
 class AssignSet extends Component {
@@ -44,6 +44,7 @@ class AssignSet extends Component {
 		return (
 			<div className="assign-student-list">
                 <h2>Assign <em>{this.props.set_title}</em> to:</h2>
+                <em>Once a set is assigned, it may can no longer be edited</em>
                 <div className="err-cont">
                     <span className="err">{this.state.error_message}</span>
                 </div>

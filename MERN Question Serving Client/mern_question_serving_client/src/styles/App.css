@@ -222,6 +222,11 @@ nav{
   align-items: center;
 }
 
+/* LaTeX */
+.math-block{
+  text-align: center;
+}
+
 /* Footer */
 .footer{
   display: flex;
