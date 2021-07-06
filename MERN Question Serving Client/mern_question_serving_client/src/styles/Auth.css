@@ -7,6 +7,11 @@
 	background: var(--primary-1);
 	height: 100vh;
 }
+.login-page-inner{
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
 .sign-in-with-google{
 	display: inline-flex;
 	padding: .55em 1.75em;
@@ -23,6 +28,10 @@
 	width: 2em;
 	height: 2em;
 	margin-right: 1em;
+}
+.login-page .back-link{
+	text-align: center;
+	color: white;
 }
 
 /* Set Username */

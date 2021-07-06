@@ -122,45 +122,51 @@ router.get('/invite/list-outgoing', (req, res) => {
 });
 // Get sets assigned to a student
 router.get('/sets', async (req, res) => {
-	const user_id = req.session.passport.user;
-	User.findById(user_id, async (err, student_user) => {
-		const sets = student_user.studentDeets.sets;
-		let incomplete = []
-		let tutor_set_obj = {}
-		let embiggened_sets = []
-		sets.forEach(set => {
-			if(tutor_set_obj[set.tutorId]){
-				tutor_set_obj[set.tutorId].push(set.setId.toString());
-			}else{
-				tutor_set_obj[set.tutorId] = [set.setId.toString()];
-			}
-		})
+	try{
+		const user_id = req.session.passport.user;
 
-		for await (let tutor_id of Object.keys(tutor_set_obj)){
-			await User.findById(tutor_id, (err, tutor_user) => {
+		User.findById(user_id, async (err, student_user) => {
+			const sets = student_user.studentDeets.sets;
+			let incomplete = []
+			let tutor_set_obj = {}
+			let embiggened_sets = []
+			sets.forEach(set => {
+				if(tutor_set_obj[set.tutorId]){
+					tutor_set_obj[set.tutorId].push(set.setId.toString());
+				}else{
+					tutor_set_obj[set.tutorId] = [set.setId.toString()];
+				}
+			})
+
+			for await (let tutor_id of Object.keys(tutor_set_obj)){
+				let tutor_user = await User.findById(tutor_id);
 				for(let i=0; i<tutor_user.tutorDeets.sets.length; i++){				
 					if(tutor_set_obj[tutor_id].includes(tutor_user.tutorDeets.sets[i]._id.toString())){
-						let set = tutor_user.tutorDeets.sets[i];
+						const tutor_set = tutor_user.tutorDeets.sets[i];
+						const student_set = sets.find(qset => qset.setId.toString() === tutor_set._id.toString());
 						embiggened_sets.push({
-							title: set.title,
-							setLength: (set.questions ? set.questions.length : 0),
+							title: tutor_set.title,
+							setLength: (tutor_set.questions ? tutor_set.questions.length : 0),
 							tutorUsername:  tutor_user.username,
 							tutorDisplayName:  tutor_user.displayName,
-							setId: set._id,
-							numAnswered: sets.find(qset => qset.setId.toString() === set._id.toString()).questions.filter(question => question.responses.length).length
+							tutorProfileIcon:  tutor_user.profileIcon,
+							setId: tutor_set._id,
+							numAnswered: student_set.questions.filter(question => question.responses.length).length,
+							creationDate: tutor_set.date,
+							completeDate: student_set.completeDate
 						});
 					}
 				}
-			})
-		}
+			}
 
-		res.json({
-			incomplete: embiggened_sets.filter(set => set.numAnswered < set.setLength),
-			complete: embiggened_sets.filter(set => set.numAnswered >= set.setLength)
+			res.json({
+				incomplete: embiggened_sets.filter(set => !set.completeDate),
+				complete: embiggened_sets.filter(set => set.completeDate)
+			})
 		})
-	}).catch(err => {
-		res.send(err);
-	});
+	}catch(err){
+		res.status(400).send(err)
+	}
 });
 router.get('/set/:set_id', (req, res) => {
 	const user_id = req.session.passport.user;

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Question from './question';
+import { withRouter } from 'react-router-dom';
 
 class SetGame extends Component {
     constructor(props) {
@@ -103,6 +104,7 @@ class SetGame extends Component {
                         </div>
                         <div className="set-game-complete-button-cont">
                             <button className="button-a set-game-review-button" onClick={() => this.setState({questionNumber: 1})}>Review</button>
+                            <button className="button-a set-game-finish-button" onClick={() => window.location.replace('/app/student')}>Finish</button>
                         </div>
                     </div>
                 </div>
@@ -111,4 +113,4 @@ class SetGame extends Component {
     }
 }
 
-export default SetGame;
+export default withRouter(SetGame);

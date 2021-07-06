@@ -4,3 +4,12 @@
 	align-items: center;
 	min-height: 100vh;
 }
+.home-center{
+	text-align: center;
+}
+.home-center p{
+	max-width: 40ch;
+}
+.home-center a{
+	display: inline-block;
+}

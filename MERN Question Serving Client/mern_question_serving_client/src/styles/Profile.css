@@ -1,3 +1,6 @@
+.profile-controller-inner{
+	 min-height: calc(100vh - var(--footer-height) - 7px);
+}
 .profile-inner{
 	border-radius: 10px;
 	box-shadow: 1px 1px 10px rgba(0,0,0,.2);

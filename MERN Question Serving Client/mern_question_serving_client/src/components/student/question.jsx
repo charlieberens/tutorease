@@ -81,11 +81,9 @@ class Question extends Component {
         }else{
             return (
                 <div className="question review">
-                    <div className="question-body">
-                        {this.props.question?.body?.split('\n').filter(section => section).map(textFragment => 
-                            <p><Latex>{textFragment}</Latex></p>
-                        )}      
-                    </div>
+                    <RenderQuestionBody className="question-body">
+                        {this.props.question?.body}
+                    </RenderQuestionBody>
                     <ul className={`answer-block  ${this.state.correct ? 'correct' : ''}`}>
                         { this.props.question?.answers.map((answer, index) => 
                             <li key={index} className={`answer ${this.state.selected === index ? 'selected' : ''} ${this.state.incorrectAnswers.includes(index) ? 'incorrect' : ''}`} onClick={!this.state.incorrectAnswers.includes(index) && (() => this.selectAnswer(index))}>
@@ -95,8 +93,8 @@ class Question extends Component {
                                 <div className="answer-text"><Latex>{answer}</Latex></div>
                             </li>) }
                     </ul>
-                    <button className="button-a" onClick={this.prevQuestion} disabled={this.state.question_index < 1}>Previous</button>
-                    <button className="button-a" onClick={this.nextQuestion} >{(this.props.question_index + 1) < this.props.set_length ? 'Next' : 'Finish'}</button>
+                    <button className="button-a" onClick={this.state.question_index >= 1 ? this.prevQuestion : false} disabled={this.state.question_index < 1}>Previous</button>
+                    <button className="button-a" onClick={this.nextQuestion}>{(this.props.question_index + 1) < this.props.set_length ? 'Next' : 'Finish'}</button>
                 </div>
             );
         }

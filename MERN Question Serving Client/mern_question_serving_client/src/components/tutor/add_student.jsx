@@ -61,7 +61,7 @@ class AddStudent extends Component {
 
 					{this.state.selected_student &&
 						<div>
-							<p>Add {this.state.selected_student.displayName} (@{this.state.selected_student.username}) as a student?</p>
+							<p>Invite {this.state.selected_student.displayName} (@{this.state.selected_student.username}) as a student?</p>
 							<button className="button-a" onClick={this.inviteStudent}>Confirm</button>
 						</div>
 					}

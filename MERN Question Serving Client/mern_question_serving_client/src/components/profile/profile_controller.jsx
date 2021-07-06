@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, Link } from 'react-router-dom';
 import ViewStudentPerformance from '../tutor/view_student_performance'
 import Profile from './profile'
+import Page404 from '../page_404'
+import Footer from '../footer'
+import Back from '../back'
 
 class ProfileControler extends Component {
     constructor(props) {
@@ -10,18 +13,26 @@ class ProfileControler extends Component {
 
     render() {
         return (
-        	<div>
-	            <Switch>
-	            	<Route path="/app/profile/:student_username/performance">
-	            		<ViewStudentPerformance/>
-	            	</Route>
-	            	<Route path="/app/profile/:username">
-	            		<Profile current_user={this.props.current_user}/>
-	            	</Route>
-	            	<Route path="/app/profile/">
-	            		<Redirect to={`/app/profile/${this.props.current_user.username}`}/>
-	            	</Route>
-	            </Switch>
+        	<div className="profile-controller">
+        		<div className="profile-controller-inner trad-cont">
+		            <Switch>
+		            	<Route path="/profile/:student_username/performance">
+		            		<ViewStudentPerformance/>
+		            	</Route>
+		            	<Route path="/profile/:username">
+		            		<Back className="top-left"/>
+		            		<Profile current_username={this.props.current_username}/>
+		            	</Route>
+		            	{this.props.current_username ?
+			            	<Route path="/profile/">
+			            		<Redirect to={`/profile/${this.props.current_username}`}/>
+			            	</Route>
+		            	:
+		            		<Page404/>
+		            	}
+		            </Switch>
+        		</div>
+	            <Footer/>
         	</div>
         );
     }

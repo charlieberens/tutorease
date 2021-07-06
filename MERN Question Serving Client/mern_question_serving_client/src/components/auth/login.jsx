@@ -26,8 +26,10 @@ class Login extends Component {
     render() {
         return (
             <div className="login-page">
-                <Back/>
-                <a className="sign-in-with-google button" href="/auth/google"><FcGoogle className="sign-in-with-google-icon"/><span>Sign in with Google</span></a>
+                <div className="login-page-inner">
+                    <a className="sign-in-with-google button" href="/auth/google"><FcGoogle className="sign-in-with-google-icon"/><span>Sign in with Google</span></a>
+                    <br/><Back/>
+                </div>
             </div>
         );
     }

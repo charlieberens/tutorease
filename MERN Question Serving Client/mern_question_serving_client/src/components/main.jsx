@@ -30,7 +30,6 @@ class Main extends Component {
     componentDidUpdate(){
     	try{
 			document.documentElement.style.setProperty('--nav-height', document.getElementsByTagName('nav')[0].offsetHeight + 'px');
-	    	document.documentElement.style.setProperty('--footer-height', document.getElementsByClassName('footer')[0].offsetHeight + 'px');
     	}catch(err){
     		console.log(err);
     	}
@@ -61,7 +60,7 @@ class Main extends Component {
 							<a href="/auth/logout">Log Out</a>
 		            	</div>
 		            	<div className="nav-right">
-		            		<Link to={`/app/profile/${this.state.user.username}`}><img className="nav-profile-icon" src={this.state.user?.profileIcon}/></Link>
+		            		<Link to={`/profile/${this.state.user.username}`}><img className="nav-profile-icon" src={this.state.user?.profileIcon}/></Link>
 		            	</div>
 		            </nav>
 		            <div className="main-inner">	            	
@@ -74,9 +73,6 @@ class Main extends Component {
 							</Route>
 							<Route path="/app/student">
 								<StudentPanel/>
-							</Route>
-							<Route path="/app/profile/">
-								<ProfileController current_user={this.state.user}/>
 							</Route>
 							<Route path="/app/setup">
 								<Setup user={this.state.user}/>

@@ -6,6 +6,15 @@ class Footer extends Component {
         super(props);
     }
 
+    componentDidMount(){
+        console.log('ee')
+        try{
+            document.documentElement.style.setProperty('--footer-height', document.getElementsByClassName('footer')[0].offsetHeight + 'px');
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     render() {
         return (
             <div className="footer">

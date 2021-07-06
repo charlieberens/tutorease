@@ -50,27 +50,26 @@ router.get('/set/:set_id', async (req, res) => {
 		
 		let embiggened_students = []
 
-		await User.find({'_id': { $in: set.students.map(student_id => mongoose.Types.ObjectId(student_id))}}, (err, student_users) => {
-			student_users = student_users.filter(student_user => student_user.student);
-			embiggened_students = student_users.map(student_user => {
-				let student_set = student_user.studentDeets.sets.find(set => set.setId.toString() === req.params.set_id.toString());
-				return({
-					id: student_user._id,
-					displayName: student_user.displayName,
-					username: student_user.username,
-					profileIcon: student_user.profileIcon,
-					numAnswered: student_set.questions.filter(question => question.responses.length).length,
-					numCorrect: student_set.questions.filter(question => question.responses.length === 1).length,
-					completeDate: student_set.completeDate,
-				})
+		let student_users = await User.find({'_id': { $in: set.students.map(student_id => mongoose.Types.ObjectId(student_id))}})
+		student_users = student_users.filter(student_user => student_user.student);
+		embiggened_students = student_users.map(student_user => {
+			let student_set = student_user.studentDeets.sets.find(set => set.setId.toString() === req.params.set_id.toString());
+			return({
+				id: student_user._id,
+				displayName: student_user.displayName,
+				username: student_user.username,
+				profileIcon: student_user.profileIcon,
+				numAnswered: student_set.questions.filter(question => question.responses.length).length,
+				numCorrect: student_set.questions.filter(question => question.responses.length === 1).length,
+				completeDate: student_set.completeDate,
 			})
-			res.json({
-				id: set._id,
-				title: set.title,
-				date: set.date,
-				questions: temp_questions,
-				students: embiggened_students
-			});
+		})
+		res.json({
+			id: set._id,
+			title: set.title,
+			date: set.date,
+			questions: temp_questions,
+			students: embiggened_students
 		});
 	}catch(err){
 		console.log(err)
@@ -136,16 +135,25 @@ router.post('/sets/', (req, res) => {
 		title: body.title,
 		description: body.description
 	}
-	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
-		tutor_user.tutorDeets.sets.push(set);
-		tutor_user.save() //Saves the set to the database
-		.then(data => {
-			res.sendStatus(201);
-		})
-		.catch(err => {
-			res.send(err);
+	if(!set.title){
+		res.status(400).send({err: 'You must name your set'})
+	}else{
+		User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+			if(tutor_user.tutorDeets.sets.map(qset => qset.title).includes(set.title)){
+				res.status(400).send({err: `You already have a set named "${set.title}"`})
+			}else{
+				tutor_user.tutorDeets.sets.push(set);
+				tutor_user.save() //Saves the set to the database
+				.then(data => {
+					res.sendStatus(201);
+				})
+				.catch(err => {
+					console.log('EERR', eer)
+					res.send(err);
+				});
+			}
 		});
-	});
+	}
 });
 
 // Post Question
@@ -167,7 +175,7 @@ router.post('/questions/:set_id', (req, res) => {
 	}else{
 		User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
 			// const set = tutor.sets.id(req.params.set_id);
-			if(!tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).students){
+			if(!tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).students.length){
 				tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
 
 				tutor_user.save() //Saves the set to the database
@@ -178,7 +186,7 @@ router.post('/questions/:set_id', (req, res) => {
 					res.send(err);
 				});
 			}else{
-				res.json({err: 'You mustn\'t edit an assigned set'})
+				res.status(400).json({err: 'You mustn\'t edit an assigned set'})
 			}
 		});
 	}
@@ -186,27 +194,30 @@ router.post('/questions/:set_id', (req, res) => {
 
 // DELETE
 // Delete Set
-router.delete('/sets/:set_id', (req, res) => {
-	const user_id = req.session.passport.user;
-	const set_id = req.params.set_id;
+router.delete('/sets/:set_id', async (req, res) => {
+	try{
+		const user_id = req.session.passport.user;
+		const set_id = req.params.set_id;
 
-	User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
-		tutor_user.tutorDeets.sets.find(set => set._id = set_id).students.forEach(student_id => {
-			User.findById(student_id, (err, student_user) => {
-				student_user.studentDeets.sets.find(set => set.setId == set_id).deleted = true;
-				student_user.save();
-			});
-		});		
-		const filtered = tutor_user.tutorDeets.sets.filter(set => set._id != set_id);
+		const tutor_user = await User.findById(user_id);
+		const duplicate_sets = tutor_user.tutorDeets.sets; //I have absolutely no clue why, but .find() is causing ID's to change.
+		for (const student_id of duplicate_sets.find(qset => qset._id == set_id).students){
+			try{
+				const student_user = await User.findById(student_id);
+				student_user.studentDeets.sets.find(qset => qset.setId == set_id).deleted = true;
+				await student_user.save();
+			}catch(err){
+				console.log(err);
+			}
+		}
+		const filtered = tutor_user.tutorDeets.sets.filter(set => set._id.toString() != set_id.toString());
 		tutor_user.tutorDeets.sets = filtered;
-		tutor_user.save() //Saves the set to the database
-		.then(data => {
-			res.sendStatus(200);
-		})
-		.catch(err => {
-			res.send(err);
-		});
-	});
+		await tutor_user.save();
+		res.sendStatus(200);
+	}catch(err){
+		console.log('delete tutor/sets/:set_id - error', err)
+		res.status(400).send(err);
+	}
 });
 // Delete Question
 router.delete('/set/:set_id/:question_id', (req, res) => {
@@ -214,7 +225,7 @@ router.delete('/set/:set_id/:question_id', (req, res) => {
 	const set_id = req.params.set_id;
 	const question_id = req.params.question_id;
 
-	User.findById(tutor_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+	User.findById(tutor_id, (err, tutor_user) => {
 		const set = tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id);
 		tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.splice(indexOfProperty(set.questions, '_id', question_id), 1);
 		tutor_user.save() //Saves the set to the database

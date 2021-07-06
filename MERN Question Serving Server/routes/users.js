@@ -11,10 +11,12 @@ const checkUserLoggedIn = (req, res, next) => {
 
 // ---------------------- Get ----------------------------
 // Get user
-router.get('/', checkUserLoggedIn, (req, res) => {
-	const user_id = req.session.passport.user;
-	User.findById(user_id, (err, user) => {
-		res.json({
+router.get('/', checkUserLoggedIn, async (req, res) => {
+	try{
+		const user_id = req.session.passport.user;
+		const user = await User.findById(user_id);
+		//If fields is passed as a parameter, this block of code only responds with the given fields
+		const output_obj = {
 			displayName: user.displayName,
 			profileIcon: user.profileIcon,
 			bio: user.bio,
@@ -23,8 +25,13 @@ router.get('/', checkUserLoggedIn, (req, res) => {
 			student: user.student,
 			username: user.username,
 			startDate: user.startDate,
-		});
-	});
+			id: user_id
+		};
+		const fields_arr = (req.query.fields ? req.query.fields : Object.keys(output_obj));
+		res.json(Object.fromEntries(Object.entries(output_obj).filter(([key, value]) => fields_arr.includes(key))));
+	}catch(err){
+		res.status(400).send(err);
+	}
 });
 
 // Get user profile

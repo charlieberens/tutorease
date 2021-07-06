@@ -32,7 +32,7 @@ class QuestionPopup extends Component {
     render() {
         return (
             <div className="micro-popup" ref={this.setBoxRef}>
-            	<div className="micro-popup-edit"><IoPencil className="micro-popup-icon"/>Edit Question</div>
+            	{/* <div className="micro-popup-edit"><IoPencil className="micro-popup-icon"/>Edit Question</div> */}
             	<div className="micro-popup-delete" onClick={this.props.deleteQuestion}><IoClose className="micro-popup-icon"/>Delete Question</div>
             </div>
         );

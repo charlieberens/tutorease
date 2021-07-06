@@ -20,8 +20,8 @@
   --primary-1: var(--purple-55);
   --primary-2: var(--purple-60);
 
-  --nav-height: 0;
-  --footer-height: 0;
+  --nav-height: 0px;
+  --footer-height: 0px;
 }
 
 /*Test comment*/
@@ -46,6 +46,10 @@ body{
   font-size: 20px;
   color: var(--grey-20);
 }
+.unbold{
+  font-weight: 300;
+  font-family: noto-sans, sans-serif;
+}
 h1,h2,h3,h4,h5,h6{
   /*font-family: brandon-grotesque, sans-serif;*/
   font-family: aktiv-grotesk, sans-serif;
@@ -65,18 +69,27 @@ input, textarea, input::placeholder, textarea::placeholder{
   font-family: noto-sans, sans-serif;
   font-weight: 300;
 }
+textarea{
+  max-width: 100%;
+  min-width: 100%;
+  border: 1px solid var(--grey-50);
+  border-radius: 5px;
+  padding: 1em;
+}
+textarea:focus{
+  outline: none;
+  border: 1px solid var(--grey-20);
+}
 a{
   text-decoration: none;
   color: inherit;
   cursor: pointer;
 }
-.inline-a, .linkify a{
+.primary-a, .linkify a{
   color: var(--primary-1);
-  border-bottom: 1px transparent solid;
 }
-.inline-a:hover, .linkify a:hover{
+.primary-a:hover, .linkify a:hover{
   color: var(--primary-2);
-  border-bottom: 1px var(--primary-2) solid;
 }
 .grey-a{
   opacity: .8;
@@ -94,12 +107,16 @@ button, input[type="submit"], .button-a, .button-w, .button{
   cursor: pointer;
   user-select: none;
 }
+.pill{
+  border-radius: 5000px;
+  padding: .5em 1.5em;
+}
 .button-a:not([disabled]){
   color:  white;
-  background: var(--primary-1);
+  background: linear-gradient(var(--primary-2), var(--primary-1));
 }
 .button-a:not([disabled]):hover{
-  background: var(--primary-2);
+  background: linear-gradient(var(--primary-1), var(--primary-2));
 }
 .button-a[disabled]{
   cursor: not-allowed;
@@ -146,6 +163,26 @@ input[type=text]{
   font-size: 75%;
   margin-bottom: 1em;
 }
+.back-link{
+  opacity: .5;
+  display: inline-flex;
+  align-items: center;
+}
+.back-link.top-left{
+  position: absolute;
+  top: 2em;
+  left: 2em;
+}
+.back-link:hover{
+  opacity: 1;
+}
+
+.trad-cont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+}
 
 /* Popups */
 .popup-cont{
@@ -178,6 +215,9 @@ input[type=text]{
   margin: auto;
   text-align: left;
 }
+.popup h2{
+  margin-bottom: .5em;
+}
 .popup-close{
   position: absolute;
   top: 1rem;
@@ -205,6 +245,9 @@ nav{
   justify-content:space-between;
   padding: 1.5em;
   align-items: center;
+}
+.nav-left a{
+  margin-right: 1em;
 }
 .nav-profile-icon{
   width: 3em;
@@ -243,4 +286,13 @@ nav{
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+}
+
+/* Feedback, About, LaTeX, etc */
+.read-page{
+  min-height: calc(100vh - var(--footer-height) - 7px);
+}
+.read-page-inner{
+  max-width: 50ch;
+  width: 100%;
 }

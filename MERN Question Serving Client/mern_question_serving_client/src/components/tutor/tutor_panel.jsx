@@ -77,7 +77,6 @@ class TutorPanel extends Component {
 			    						<SetList/>
 			    					</div>
 			    					<div className="tutor-panel-right">
-			    						<h2>Students</h2>
 			    						<StudentList tutorDeets={this.state.tutorDeets}/>
 			    					</div>
 		    					</div>

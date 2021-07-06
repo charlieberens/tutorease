@@ -115,7 +115,7 @@ class Profile extends Component {
                                     (this.state.user.currentStudent ? 
                                         <div>
                                             <em>{this.state.user.displayName} is your student!</em><br/>
-                                            <Link className="grey-a" to={`/app/profile/${this.state.user.username}/performance`}>View progress</Link>
+                                            <Link className="grey-a" to={`/profile/${this.state.user.username}/performance`}>View progress</Link>
                                         </div>
                                     :
                                         <div>

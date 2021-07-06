@@ -14,7 +14,7 @@ class Home extends Component {
             <div className="home-center">
                 <h1>This is Filler Name</h1>
                 <p>Where independent educators can easily assign their students questions</p>
-                <Link className="home-login-button" to="/login">Begin</Link>
+                <Link className="home-login-button button-a pill" to="/login">Begin</Link>
             </div>
        	</div>
         );

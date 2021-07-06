@@ -62,11 +62,13 @@ class Set extends Component {
 				<>
 					<div>
 						<nav className="tutor-set-nav">
-							<Link className={`${true && 'selected'} nav-item`} to={`${this.state.set_path}`}>Set</Link>
-							<Link className="nav-item" to={`${this.state.set_path}/performance`}>Performance</Link>
+							<Link className={`grey-a ${!window.location.pathname.includes('performance') && 'selected'} nav-item`} to={`${this.state.set_path}`}>Set</Link>
+							<Link className={`grey-a ${window.location.pathname.includes('performance') && 'selected'} nav-item`} to={`${this.state.set_path}/performance`}>Performance</Link>
 						</nav>
-						<h1>{this.state.title}</h1>
-						<a onClick={() => this.controlAssignQuestionPopup(true)}>Good Link</a>
+						<div className="set-title-cont">
+							<h1>{this.state.title}</h1>
+							<a onClick={() => this.controlAssignQuestionPopup(true)} className="primary-a">Assign Set</a>
+						</div>
 						<Switch>
 							<Route path={`/app/tutor/sets/:set_id/performance/:student_username`}>
 								<ReviewPerformance set_id={this.props.match.params.id} set={{questions: this.state.questions}} base_path={`${this.props.base_path}/${this.props.match.params.id}/performance`}/>

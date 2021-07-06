@@ -32,9 +32,10 @@ class StudentList extends Component {
     render() {
         return (
             <div className="student-list-module">
+                <h2>Students</h2>
                 <div className="student-list">
                     {this.state.students.map((student, index) => 
-                        <Link to={`/app/profile/${student.username}`} className="student-list-item student-list-student">
+                        <Link to={`/profile/${student.username}`} className="student-list-item student-list-student">
                             <img className="student-list-item-left" src={student.profileIcon}/>
                             <div className="student-list-item-right">
                                 <h3 className="student-list-student-displayName">{student.displayName}</h3>
@@ -43,7 +44,7 @@ class StudentList extends Component {
                         </Link>
                     )}
                     {this.state.pendingStudents.map((student, index) => 
-                        <Link to={`/app/profile/${student.username}`} className="student-list-item student-list-pending">
+                        <Link to={`/profile/${student.username}`} className="student-list-item student-list-pending">
                             <img className="student-list-item-left" src={student.profileIcon}/>
                             <div className="student-list-item-right">
                                 <h3 className="student-list-student-displayName">{student.displayName}</h3>
@@ -53,7 +54,7 @@ class StudentList extends Component {
                     )}
                 </div>
                 <div className="student-list-module-bottom">
-                    <Link to="/app/tutor/add-student" className="student-list-add-student-link"><IoAddCircle className="student-list-add-student-link-add"/>Add Student</Link>
+                    <Link to="/app/tutor/add-student" className="student-list-add-student-link"><IoAddCircle className="student-list-add-student-link-add"/>Invite Student</Link>
                 </div>
             </div>
         );

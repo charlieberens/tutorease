@@ -81,15 +81,17 @@ class SetList extends Component {
     }
 
     render() {
-        if(!this.state.sets){ //If there aren't any sets
-    		return <div></div>
-    	}else{ // If Open Dropdown
-	        return (
-	            <div>
-                    <div className="set-list-header-cont">
-                        <h1>Sets</h1>
-                        <IoAddCircle className="set-list-header-plus" onClick={() => this.controlCreateSetPopup(true) }/>
+        return (
+            <div>
+                <div className="set-list-header-cont">
+                    <h2>Sets</h2>
+                    <IoAddCircle className="set-list-header-plus" onClick={() => this.controlCreateSetPopup(true) }/>
+                </div>
+                {!this.state.sets.length ?
+                    <div className="no-sets-outer">
+                        <span>You don't have any sets <a className="primary-a" onClick={() => this.controlCreateSetPopup(true) }>make one?</a></span>      
                     </div>
+                    :
                     <div className="set-list-inner">
     	            	{this.state.sets.map((set, index) => 
     	            		<div key={set.id} className="set-list-item" index={index}>
@@ -106,15 +108,15 @@ class SetList extends Component {
                             </div>
     	            	)}
                     </div>
-                    {this.state.createSetPopupOpen &&
-                        <Popup popupMethod={this.controlCreateSetPopup}><CreateSet popupMethod={this.controlCreateSetPopup} loadSets={this.loadSets}/></Popup>
-                    }
-                    {this.state.deleteSetPopupOpen &&
-                        <Popup popupMethod={this.controlDeleteSetPopup}><DeleteSet popupMethod={this.controlDeleteSetPopup} loadSets={this.loadSets} set={this.state.deleteSet}/></Popup>
-                    }
-	            </div>
-	        );
-    	}
+                }
+                {this.state.createSetPopupOpen &&
+                    <Popup popupMethod={this.controlCreateSetPopup}><CreateSet popupMethod={this.controlCreateSetPopup} loadSets={this.loadSets}/></Popup>
+                }
+                {this.state.deleteSetPopupOpen &&
+                    <Popup popupMethod={this.controlDeleteSetPopup}><DeleteSet popupMethod={this.controlDeleteSetPopup} loadSets={this.loadSets} set={this.state.deleteSet}/></Popup>
+                }
+            </div>
+        );
     }
 }
 

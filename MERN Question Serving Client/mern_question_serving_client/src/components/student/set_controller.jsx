@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 import {match, withRouter} from 'react-router-dom';
-import SetGame from './set_game'
+import SetGame from './set_game';
+import Back from '../back';
 
 class SetController extends Component {
     constructor(props) {
@@ -61,8 +62,11 @@ class SetController extends Component {
     		)
     	}else{
 			return (
-				<div className="set-game-cont">
-					<SetGame set={this.state} getSet={this.getSet} completed={this.state.completed}/>
+				<div className="set-game-outer">
+					<Back/>
+					<div className="set-game-cont">
+						<SetGame set={this.state} getSet={this.getSet} completed={this.state.completed}/>
+					</div>
 				</div>
 			);
     	}

@@ -32,7 +32,7 @@ class SetListPopup extends Component {
     render() {
         return (
             <div className="micro-popup" ref={this.setBoxRef}>
-                <div className="micro-popup-edit"><IoPencil className="micro-popup-icon"/>Edit Set</div>
+                {/* <div className="micro-popup-edit"><IoPencil className="micro-popup-icon"/>Edit Set</div> */}
                 <div className="micro-popup-delete" onClick={this.props.deleteSet}><IoClose className="micro-popup-icon"/>Delete Set</div>
             </div>
         );

@@ -50,7 +50,7 @@ class SetQuestions extends Component {
 					<div>
 						{!this.props.questions?.length ?
 							(<div className="no-questions-cont">
-								<p>This set doesn't have any questions. <Link className="inline-a" to={`/app/tutor/sets/${this.props.id}/create-question`}>Make one</Link>?</p>
+								<p>This set doesn't have any questions. <Link className="primary-a" to={`/app/tutor/sets/${this.props.id}/create-question`}>Make one</Link>?</p>
 					    	</div>)
 						:
 							(<div className="question-list">
