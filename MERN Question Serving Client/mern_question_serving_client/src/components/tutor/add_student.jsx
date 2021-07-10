@@ -54,7 +54,7 @@ class AddStudent extends Component {
                         </div>
 					)}
 
-					{!this.state.students?.length && this.state.search_value?.length &&
+					{!this.state.students?.length && !!this.state.search_value?.length &&
 						<span>No students found</span>
 					}
 				</div>

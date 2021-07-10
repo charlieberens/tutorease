@@ -12,11 +12,11 @@ class StudentPanel extends Component {
         return (
             <div className="student-panel">
                 <div className="student-panel-sets-cont student-panel-left">
-                    <h2>Sets</h2>
+                    <h2 className="student-panel-header">Sets</h2>
                     <StudentSets/>
                 </div>
                 <div className="student-panel-tutors-cont student-panel-right">
-            	    <h2>Tutors</h2>
+            	    <h2 className="student-panel-header">Tutors</h2>
                     <TutorList/>
                 </div>
             </div>

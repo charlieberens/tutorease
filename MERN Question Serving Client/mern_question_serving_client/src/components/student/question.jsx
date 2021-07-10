@@ -50,7 +50,7 @@ class Question extends Component {
     }
 
     nextQuestion = () => {
-        this.setState({selected: null, correct: false, incorrectAnswers: []})
+        this.setState({selected: null, correct: false})
         this.props.nextQuestion(this.props.review)
     }
 
@@ -59,7 +59,6 @@ class Question extends Component {
     }
 
     render() {
-        console.log(this.props)
         if(!this.props.review){
             return (
                 <div className="question">
@@ -84,17 +83,21 @@ class Question extends Component {
                     <RenderQuestionBody className="question-body">
                         {this.props.question?.body}
                     </RenderQuestionBody>
-                    <ul className={`answer-block  ${this.state.correct ? 'correct' : ''}`}>
+                    <ul className='answer-block review'>
                         { this.props.question?.answers.map((answer, index) => 
-                            <li key={index} className={`answer ${this.state.selected === index ? 'selected' : ''} ${this.state.incorrectAnswers.includes(index) ? 'incorrect' : ''}`} onClick={!this.state.incorrectAnswers.includes(index) && (() => this.selectAnswer(index))}>
+                            <li key={index} className={`answer ${this.props.question.responses.slice(0,-1).includes(answer) ? 'incorrect' : (this.props.question.responses[this.props.question.responses.length-1] === answer ? 'correct' : '')}`}>
                                 <div className="answer-letter-outer">
                                     <span className="answer-letter-inner">{alphabet[index]}</span>
                                 </div>
                                 <div className="answer-text"><Latex>{answer}</Latex></div>
                             </li>) }
                     </ul>
-                    <button className="button-a" onClick={this.state.question_index >= 1 ? this.prevQuestion : false} disabled={this.state.question_index < 1}>Previous</button>
-                    <button className="button-a" onClick={this.nextQuestion}>{(this.props.question_index + 1) < this.props.set_length ? 'Next' : 'Finish'}</button>
+                    <div className="question-review-button-cont">
+                        {this.props.question_index >=1 &&
+                            <button className="button-a" onClick={this.prevQuestion}>Previous</button>
+                        }
+                        <button className="button-a" onClick={this.nextQuestion}>{(this.props.question_index + 1) < this.props.set_length ? 'Next' : 'Finish'}</button>
+                    </div>
                 </div>
             );
         }

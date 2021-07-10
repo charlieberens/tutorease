@@ -12,12 +12,16 @@ const checkUserLoggedIn = (req, res, next) => {
 // ---------------------- Get ----------------------------
 // Get tutor
 router.get('/', async (req, res) => {
-	const user_id = req.session.passport.user;
-	const user = await User.findById(user_id);
-	if(!user.tutor){
-		res.sendStatus(400)
-	}else{
-		res.json(user.tutorDeets)
+	try{
+		const user_id = req.session.passport.user;
+		const user = await User.findById(user_id);
+		if(!user.tutor){
+			res.sendStatus(400)
+		}else{
+			res.json(user.tutorDeets)
+		}
+	}catch(err){
+		res.status(400).send(err)
 	}
 });
 
@@ -100,7 +104,7 @@ router.get('/set_answers/:set_id/:student_username', async (req, res) => {
 	}
 });
 router.get('/get-student-performance/sets/:student_username', async (req, res) => {
-	// try{
+	try{
 		const user_id = req.session.passport.user;
 		const student_username = req.params.student_username;
 		const student_user = await User.findOne({username: student_username});
@@ -121,74 +125,85 @@ router.get('/get-student-performance/sets/:student_username', async (req, res) =
 		}else{
 			res.json({noAuth: true});
 		}
-	// }catch(err){
-	// 	res.send(err)
-	// }
+	}catch(err){
+		res.status(400).send(err)
+	}
 });
 
 // ---------------------- Post ---------------------------
 // Post Set
 router.post('/sets/', (req, res) => {
-	const user_id = req.session.passport.user;
-	const body = req.body;
-	const set = {
-		title: body.title,
-		description: body.description
-	}
-	if(!set.title){
-		res.status(400).send({err: 'You must name your set'})
-	}else{
-		User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
-			if(tutor_user.tutorDeets.sets.map(qset => qset.title).includes(set.title)){
-				res.status(400).send({err: `You already have a set named "${set.title}"`})
-			}else{
-				tutor_user.tutorDeets.sets.push(set);
-				tutor_user.save() //Saves the set to the database
-				.then(data => {
-					res.sendStatus(201);
-				})
-				.catch(err => {
-					console.log('EERR', eer)
-					res.send(err);
-				});
-			}
-		});
+	try{
+		const user_id = req.session.passport.user;
+		const body = req.body;
+		const set = {
+			title: body.title,
+			description: body.description
+		}
+		if(!set.title){
+			res.status(400).send({err: 'You must name your set'})
+		}else{
+			User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+				if(tutor_user.tutorDeets.sets.map(qset => qset.title).includes(set.title)){
+					res.status(400).send({err: `You already have a set named "${set.title}"`})
+				}else{
+					tutor_user.tutorDeets.sets.push(set);
+					tutor_user.save() //Saves the set to the database
+					.then(data => {
+						res.sendStatus(201);
+					})
+					.catch(err => {
+						res.send({err: err.toString()});
+					});
+				}
+			});
+		}
+	}catch(err){
+		res.status(400).send(err)
 	}
 });
 
 // Post Question
 router.post('/questions/:set_id', (req, res) => {
-	const user_id = req.session.passport.user;
-	const body = req.body;
-	const question = {
-		body: body.body,
-		mcq: body.mcq,
-		answers: body.answers
-	}
+	try{
+		const user_id = req.session.passport.user;
+		const body = req.body;
+		const question = {
+			body: body.body,
+			mcq: body.mcq,
+			answers: body.answers
+		}
 
-	if(!question.answers.length){
-		res.status(400).json({err: 'Questions must have answers'});
-	}else if(!question.body) {
-		res.status(400).json({err: 'Questions must have bodies'});
-	}else if(question.answers.includes('')){
-		res.status(400).json({err: 'Answers cannot be empty'})
-	}else{
-		User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
-			// const set = tutor.sets.id(req.params.set_id);
-			if(!tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).students.length){
-				tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
+		if(!question.answers.length){
+			res.status(400).json({err: 'Questions must have answers'});
+		}else if(!question.body) {
+			res.status(400).json({err: 'Questions must have bodies'});
+		}else if(question.answers.includes('')){
+			res.status(400).json({err: 'Answers cannot be empty'})
+		}else if(question.body.length > 1024){
+			res.status(400).json({err: 'Questions must be no more than 1024 characters'})
+		}else if(question.answers.filter(answer => answer.length > 128).length){
+			res.status(400).json({err: 'Answers must be no more than 128 characters'})
+		}else{
+			User.findById(user_id, (err, tutor_user) => { //Finds Tutor from id and passes it into tutor var
+				// const set = tutor.sets.id(req.params.set_id);
+				if(!tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).students.length){
+					tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.push(question);
 
-				tutor_user.save() //Saves the set to the database
-				.then(data => {
-					res.sendStatus(201);
-				})
-				.catch(err => {
-					res.send(err);
-				});
-			}else{
-				res.status(400).json({err: 'You mustn\'t edit an assigned set'})
-			}
-		});
+					tutor_user.save() //Saves the set to the database
+					.then(data => {
+						res.sendStatus(201);
+					})
+					.catch(err => {
+						res.send(err);
+					});
+				}else{
+					res.status(400).json({err: 'You mustn\'t edit an assigned set'})
+				}
+			});
+		}
+	}catch(err){
+		res.status(400).send(err)
 	}
 });
 
@@ -221,21 +236,25 @@ router.delete('/sets/:set_id', async (req, res) => {
 });
 // Delete Question
 router.delete('/set/:set_id/:question_id', (req, res) => {
-	const tutor_id = req.session.passport.user;
-	const set_id = req.params.set_id;
-	const question_id = req.params.question_id;
+	try{
+		const tutor_id = req.session.passport.user;
+		const set_id = req.params.set_id;
+		const question_id = req.params.question_id;
 
-	User.findById(tutor_id, (err, tutor_user) => {
-		const set = tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id);
-		tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.splice(indexOfProperty(set.questions, '_id', question_id), 1);
-		tutor_user.save() //Saves the set to the database
-		.then(data => {
-			res.sendStatus(200);
-		})
-		.catch(err => {
-			res.send(err);
+		User.findById(tutor_id, (err, tutor_user) => {
+			const set = tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id);
+			tutor_user.tutorDeets.sets.find(set => set._id == req.params.set_id).questions.splice(indexOfProperty(set.questions, '_id', question_id), 1);
+			tutor_user.save() //Saves the set to the database
+			.then(data => {
+				res.sendStatus(200);
+			})
+			.catch(err => {
+				res.send(err);
+			});
 		});
-	});
+	}catch(err){
+		res.status(400).send(err);
+	}
 });
 
 function indexOfProperty(arr, propName, val){

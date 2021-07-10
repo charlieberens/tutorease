@@ -37,14 +37,17 @@ class Username extends Component {
 
 	render() {
 		return (
-			<div className="choose-username-outer">
-				<h1 className="choose-username-header">Choose a username</h1>
+			<div className="choose-username-outer setup-section-outer">
+            	<div className="setup-header-err-cont">
+					<h1 className="choose-bio-header">Choose a username</h1>
+					<span className="err">{this.state.err}</span>
+            	</div>
 				<form className="choose-username-inner" onSubmit={this.onSubmit}>
-					<div className="choose-username-input-error-cont">
+					<div className="choose-username-false-input">
+						<span className="choose-username-false-input-left">@</span>
 						<input className="choose-username-input" type="text" name="username" placeholder="Username" value={this.state.value} onChange={this.onChange}/>
-						<span className="err">{this.state.err}</span>
 					</div>
-					<input className="choose-username-submit" type="submit"/>
+					<input className="choose-username-submit button-a" type="submit"/>
 				</form>
 			</div>
 		);

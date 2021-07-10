@@ -3,14 +3,15 @@ const mongoose = require('mongoose');
 const QuestionSchema = new mongoose.Schema({
 	body: {
 		type: String,
-		required: true
+		required: true,
+		maxlength: 512
 	},
 	mcq: {
 		type: Boolean,
 		required: true
 	},
 	answers: [
-		{type: String, required: true}
+		{type: String, required: true, maxlength: 128}
 	]//,
 	//index: {
 	//	type: Number,
@@ -21,7 +22,8 @@ const QuestionSchema = new mongoose.Schema({
 const SetSchema = new mongoose.Schema({
 	title: {
 		type: String,
-		required: true
+		required: true,
+		maxlength: 1024
 	},
 	description: String,
 	questions: [QuestionSchema],
@@ -63,7 +65,7 @@ const StudentSchema = new mongoose.Schema({
 			deleted: Boolean,
 			questions: [
 				{
-					responses: [String]
+					responses: [{type: String, maxlength: 513}]
 				}
 			],
 			completeDate: Date
@@ -74,13 +76,16 @@ const StudentSchema = new mongoose.Schema({
 const UserSchema = mongoose.Schema({
 	displayName: {
 		type: String,
-		required: true
+		required: true,
+		maxlength: 73
 	},
 	username: {
-		type: String
+		type: String,
+		maxlength: 36
 	},
 	bio: {
-		type:String
+		type:String,
+		maxlength: 512
 	},
 	googleId: {
 		type: String,
@@ -93,7 +98,6 @@ const UserSchema = mongoose.Schema({
 	profileIcon: {
 		type: String
 	},
-	description: String,
 	tutor: {
 		type: Boolean
 	},

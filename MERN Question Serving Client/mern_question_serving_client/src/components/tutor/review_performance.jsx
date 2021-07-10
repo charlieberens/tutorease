@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Latex from 'react-latex';
 import RenderQuestionBody from '../render_question_body';
-import Back from '../back';
 
 class ReviewPerformance extends Component {
     constructor(props) {
@@ -38,8 +37,7 @@ class ReviewPerformance extends Component {
     		return(<div>Give us a sec</div>)
     	}else{
 	        return (
-	            <div>
-	            	<Back className="top-left"/>
+	            <div className="tutor-rev-question-cont">
 	            	{this.state.questions.map((question, index) => (
 			            <div className="tutor-rev-question">
 			            	<span className="tutor-rev-question-index">{index+1}.</span>

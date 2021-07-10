@@ -30,21 +30,45 @@ class StudentSets extends Component {
     	console.log(this.state)
         return (
             <div>
-            	<h2>To-do</h2>
-            	{this.state.todo?.map((set, index) => 
-                    <Link className="student-set-list-item" to={`/app/student/set/${set.setId}`}>  
-                		<div className="student-set-list-item-right">                        
-                            <h4 className="student-set-list-set-title">{set.title}</h4>
-                            <span>Assigned by <Link to={`/profile/${set.tutorUsername}`}><img src={`${set.tutorProfileIcon}`}/> {set.tutorDisplayName}</Link></span>
-                        </div>
-                    </Link>
-            	)}
-            	<h2>Completed</h2>
-            	{this.state.completed?.map((set, index) => 
-                    <Link className="student-set-list-item" to={`/app/student/set/${set.setId}`}>  
-                      <p>{set.title}</p>
-                    </Link>
-            	)}
+                {!!this.state.todo?.length &&
+                    <div className="student-set-list-section">
+                    	<h3>To-do</h3>
+                    	{this.state.todo?.map((set, index) => 
+                            <Link className="student-set-list-item" to={`/app/student/set/${set.setId}`}>
+                                <div className="student-set-list-item-left">
+                                   	<h2 className="student-set-list-set-title">{set.title}</h2>
+                                    <span className="student-set-list-set-tutor"><img className="student-set-list-set-tutor-icon" src={`${set.tutorProfileIcon}`}/> {set.tutorDisplayName}</span>
+                                </div>
+                                <div className="student-set-list-item-right">
+                                    <h3>
+                                        {set.numAnswered ?
+                                            `${set.numAnswered} of ${set.setLength}`
+                                            :
+                                            `${set.setLength} question${set.setLength > 1 ? 's' : ''}`
+                                        }
+                                    </h3>
+                                </div>
+                            </Link>
+                    	)}
+                    </div>
+                }
+                {!!this.state.completed?.length &&
+                    <div className="student-set-list-section">
+                    	<h3>Completed</h3>
+                    	{this.state.completed?.map((set, index) => 
+                            <Link className="student-set-list-item" to={`/app/student/set/${set.setId}`}>  
+                                <div className="student-set-list-item-left">
+                                    <h2 className="student-set-list-set-title">{set.title}</h2>
+                                    <span className="student-set-list-set-tutor"><img className="student-set-list-set-tutor-icon" src={`${set.tutorProfileIcon}`}/> {set.tutorDisplayName}</span>
+                                </div>
+                                <div className="student-set-list-item-right">
+                                    <h3>{`${set.numCorrect} of ${set.setLength}`}</h3>
+                                </div>
+                            </Link>
+
+                    	)}
+                    </div>
+                }
             </div>
         );
     }

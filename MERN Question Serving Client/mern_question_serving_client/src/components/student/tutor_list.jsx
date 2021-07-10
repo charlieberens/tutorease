@@ -3,6 +3,7 @@ import axios from 'axios';
 import { IoCheckmark, IoClose } from "react-icons/io5";
 import ConfirmAcceptTutor from './confirm_accept_tutor'
 import Popup from '../popup'
+import {Link} from 'react-router-dom';
 
 class TutorList extends Component {
     constructor(props) {
@@ -39,25 +40,25 @@ class TutorList extends Component {
     render() {
         return (
         	<>
-	            <div>
+	            <div className="tutor-list">
 	        	    {this.state.tutors.map((tutor, index) => 
-	                    <div className="tutor-list-item tutor-list-student">
+	                    <Link className="tutor-list-item tutor-list-student" to={`/profile/${tutor.username}`}>
 	                        <img className="tutor-list-item-inner-left" src={tutor.profileIcon}/>
 	                        <div className="tutor-list-item-inner-right">
 	                            <h3 className="tutor-list-student-displayName">{tutor.displayName}</h3>
 	                            <span className="tutor-list-student-username">@{tutor.username}</span>
 	                        </div>
-	                    </div>
+	                    </Link>
 	                )}
 	                {this.state.tutorRequests.map((tutor, index) => 
 	                    <div className="tutor-list-item tutor-list-pending">
-	                    	<div className="tutor-list-item-outer-left">
-		                        <img className="tutor-list-item-inner-left" src={tutor.profileIcon}/>
+	                    	<Link to={`/profile/${tutor.username}`} className="tutor-list-item-outer-left">
+		                        <img className="tutor-list-item-inner-left" src={tutor.profileIcon} to={`/profile/${tutor.username}`}/>
 		                        <div className="tutor-list-item-inner-right">
 		                            <h3 className="tutor-list-student-displayName">{tutor.displayName}</h3>
 		                            <span className="tutor-list-student-username">@{tutor.username}</span>
 		                        </div>
-	                    	</div>
+	                    	</Link>
 	                    	<div className="tutor-list-item-outer-right">
 	                    		<button className="button-s" onClick={() => this.setState({inBay: tutor, acceptTutorPopup: true})}><IoCheckmark/></button>
 	                    		<button className="button-w"><IoClose/></button>

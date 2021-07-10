@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {IoSchool, IoSchoolOutline} from 'react-icons/io5';
+import {IoSchool, IoSchoolOutline, IoBook, IoBookOutline} from 'react-icons/io5';
 import axios from 'axios';
 
 import '../../styles/Auth.css'
@@ -49,12 +49,12 @@ class StudentTutorSelect extends Component {
 
     render() {
         return (
-        	<form className="tutor-student-select-outer">
+        	<form className="tutor-student-select-outer setup-section-outer">
         		<h1>What are you?</h1>
 				<div className="tutor-student-select-inner">
 					<div className={`tutor-student-item ${this.state.studentSelected && 'selected'}`} onClick={() => this.flipSelect(true)}>
 						<div className="tutor-student-item-top">
-							{!this.state.studentSelected ? <IoSchoolOutline/> : <IoSchool/>}
+							{!this.state.studentSelected ? <IoBookOutline/> : <IoBook/>}
 						</div>
 						<h2>Student</h2>
 					</div>
@@ -62,7 +62,7 @@ class StudentTutorSelect extends Component {
 						<div className="tutor-student-item-top">
 							{!this.state.tutorSelected ? <IoSchoolOutline/> : <IoSchool/>}
 						</div>
-						<h2>Teacher/Tutor</h2>
+						<h2>Teacher/<wbr/>Tutor</h2>
 					</div>
 				</div>
 				<button className='tutor-student-button button-a' disabled={!(this.state.studentSelected || this.state.tutorSelected)} onClick={this.sendRoleSelect}>Continue</button>

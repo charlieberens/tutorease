@@ -10,6 +10,7 @@ import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
 import SetQuestions from './set_questions'
 import SetPerformance from './set_performance'
 import ReviewPerformance from './review_performance'
+import Back from '../back';
 
 class Set extends Component {
     constructor(props) {
@@ -66,6 +67,7 @@ class Set extends Component {
 							<Link className={`grey-a ${window.location.pathname.includes('performance') && 'selected'} nav-item`} to={`${this.state.set_path}/performance`}>Performance</Link>
 						</nav>
 						<div className="set-title-cont">
+							<Back/>
 							<h1>{this.state.title}</h1>
 							<a onClick={() => this.controlAssignQuestionPopup(true)} className="primary-a">Assign Set</a>
 						</div>

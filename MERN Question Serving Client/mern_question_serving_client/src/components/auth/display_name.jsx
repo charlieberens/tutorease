@@ -36,14 +36,14 @@ class DisplayName extends Component {
 
     render() {
         return (
-            <div className="choose-display-name-outer">
-				<h1 className="choose-display-name-header">Choose a display name</h1>
+            <div className="choose-display-name-outer setup-section-outer">
+            	<div className="setup-header-err-cont">
+					<h1 className="choose-bio-header">Choose a display name</h1>
+					<span className="err">{this.state.err}</span>
+            	</div>
 				<form className="choose-display-name-inner" onSubmit={this.onSubmit}>
-					<div className="choose-display-name-input-error-cont">
-						<input className="choose-display-name-input" type="text" name="display-name" placeholder="Display Name" value={this.state.value} onChange={this.onChange}/>
-						<span className="err">{this.state.err}</span>
-					</div>
-					<input className="choose-display-name-submit" type="submit"/>
+					<input className="choose-display-name-input" type="text" name="display-name" placeholder="Display Name" value={this.state.value} onChange={this.onChange}/>
+					<input className="choose-display-name-submit button-a" type="submit"/>
 				</form>
 			</div>
         );

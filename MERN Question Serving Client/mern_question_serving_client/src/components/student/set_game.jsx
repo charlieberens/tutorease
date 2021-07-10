@@ -45,7 +45,7 @@ class SetGame extends Component {
         console.log(this.props.set)
         if(this.state.questionNumber === 0 && !this.state.completed){
             return (
-                <div className="set-game-start">
+                <div className="set-game-start set-game">
                     <div className="set-game-start-title">
                         <div className="set-game-start-title-left">
                             <h1>{this.props.set.set.title}</h1>
@@ -58,7 +58,7 @@ class SetGame extends Component {
                         </div>
                     </div>
                     <div className="set-game-start-main">
-                        <p>{this.props.set.set.description ? this.props.set.set.description: 'lorem ipsum dolor sit amet'}</p>
+                        <p>{this.props.set.set.description ? this.props.set.set.description: 'Set descriptions coming soon'}</p>
                         <div className="set-game-start-button-cont">
                             <button className="button-a set-game-start-button" onClick={this.resume}>{!this.props.set.numAnswered ? 'Start' : 'Resume'}</button>
                         </div>
@@ -67,7 +67,7 @@ class SetGame extends Component {
             );
         }else if(this.state.questionNumber <= this.props.set.set.questions.length && !this.state.completed){
             return (
-                <div className="set-game-question">
+                <div className="set-game-question set-game">
                     <div className="question-number-cont">
                         <span className="question-number">{this.state.questionNumber}</span>
                     </div>
@@ -76,7 +76,7 @@ class SetGame extends Component {
             )
         }else if(this.state.questionNumber <= this.props.set.set.questions.length && this.state.completed){
             return(
-                <div className="set-game-rev-question">
+                <div className="set-game-rev-question set-game">
                     <div className="question-number-cont">
                         <span className="question-number">{this.state.questionNumber}</span>
                     </div>
@@ -85,7 +85,7 @@ class SetGame extends Component {
             )
         }else{
             return (
-                <div className="set-game-complete">
+                <div className="set-game-complete set-game">
                     <div className="set-game-complete-title">
                         <div className="set-game-complete-title-left">
                             <h1>{this.props.set.set.title}</h1>
@@ -98,13 +98,12 @@ class SetGame extends Component {
                         </div>
                     </div>
                     <div className="set-game-complete-main">
-                        <p>You did it!</p>
                         <div className="set-game-complete-score-cont">
-                            {this.getNumCorrect()} out of {this.props.set.set.questions.length} correct
+                            <h2 className="set-game-complete-score">{this.getNumCorrect()} out of {this.props.set.set.questions.length} correct</h2>
                         </div>
                         <div className="set-game-complete-button-cont">
                             <button className="button-a set-game-review-button" onClick={() => this.setState({questionNumber: 1})}>Review</button>
-                            <button className="button-a set-game-finish-button" onClick={() => window.location.replace('/app/student')}>Finish</button>
+                            <button className="button-a set-game-finish-button" onClick={() => this.props.history.push('/app/student')}>Finish</button>
                         </div>
                     </div>
                 </div>

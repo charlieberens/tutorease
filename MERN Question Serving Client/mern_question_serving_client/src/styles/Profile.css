@@ -1,12 +1,18 @@
 .profile-controller-inner{
 	 min-height: calc(100vh - var(--footer-height) - 7px);
 }
+.profile-cont{
+	padding: 2em;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
 .profile-inner{
 	border-radius: 10px;
 	box-shadow: 1px 1px 10px rgba(0,0,0,.2);
 	border: 1px solid var(--grey-90);
-	width: 400px;
-	max-width: 100%;
+	max-width: 400px;
+	width: 100%;
 	position: relative;
 }
 .profile-top{
@@ -29,6 +35,7 @@
 .profile-bio p {
 	margin-bottom: 0;
 	width: 35ch;
+	max-width: 100%;
 	text-align: left;
 }
 .profile-bottom{
@@ -56,4 +63,28 @@
 .edit-profile-icon{
 	width:.75em;
 	height:.75em;
+}
+.profile-display-name{
+	text-align: center;
+}
+@media screen and (max-width: 500px){
+	.profile-cont{
+		padding: 0;
+	}
+	.profile-inner{
+		box-shadow: none;
+		width: 100%;
+		position: relative;
+	}
+	.profile-top{
+		padding: 0 0 1em;
+	}
+	.profile-bottom{
+		padding: 1em;
+		margin-top: 1em;
+		border-radius: 5px;
+	}
+	.profile-bio{
+		padding: 1em 0 0;
+	}
 }

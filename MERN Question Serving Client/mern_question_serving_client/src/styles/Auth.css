@@ -6,6 +6,7 @@
 	align-items: center;
 	background: var(--primary-1);
 	height: 100vh;
+	padding: 1em;
 }
 .login-page-inner{
 	display: flex;
@@ -32,73 +33,54 @@
 .login-page .back-link{
 	text-align: center;
 	color: white;
+	opacity: .8;
 }
 
-/* Set Username */
-.choose-username-outer{
+/* Setup */
+.setup{
+	min-height: calc(100vh - var(--nav-height) - var(--footer-height) - 10px);
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex-flow: column;
-	background: var(--primary-1);
-	height: 100vh;
 }
-.choose-username-header{
-	color: white;
-	text-align: center;	
-}
-.choose-username-inner{
+.setup-section-outer{
 	display: flex;
+	flex-flow: column;
 	align-items: center;
 }
-.choose-username-input-error-cont{
-	display: flex;
-	flex-flow: column;
+.setup-header-err-cont{
+	margin-bottom: 1em;
+	text-align: center;
 }
-.choose-username-input{
-	background: none;
-	border: 2px solid white;
-	color: white;
-	margin-bottom: 0 !important;
-	margin-right: 1em;
-	font-weight: bold;
-}
-.choose-username-input::placeholder{
-	color: white;
-}
-.choose-username-error{
-	max-width: 300px;
-	color: white;
-	font-size: 80%;
-	margin-top: .5em;
-}
-.choose-username-submit{
-	background: none;
-	border: 1px solid white;
-	color: white;
+.setup-header-err-cont h1{
+	margin-bottom: .1em;
 }
 
 /* Student Tutor Select */
-.tutor-student-select-outer{
-	padding: 2rem;
-	max-width:  1000px;
+.setup-outer{
+	width: 100%;
 }
 .tutor-student-select-inner{
 	display:  flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	width: 100%;
 }
 .tutor-student-item{
-	padding: 2rem;
+	padding: 2em;
 	display: flex;
 	flex-flow: column;
 	align-items: center;
 	justify-content: center;
 	border: 3px solid var(--primary-1);
 	border-radius: 5px;
-	margin: 1em;
 	cursor: pointer;
 	color:  var(--primary-1);
-	width: 14em;
+	max-width: 14em;
+	width: 100%;
 	height: 17em;
+	margin: 1em;
+	text-align: center;
 }
 .tutor-student-item.selected{
 	background: var(--primary-1);
@@ -124,9 +106,60 @@
 	height: 2.5em;
 	color: var(--primary-1);
 }
+.tutor-student-button{
+	display: block;
+	margin: 0 auto;
+}
+
+/* Set Username */
+.choose-username-header, .choose-display-name-header{
+	text-align: center;	
+}
+.choose-username-inner, .choose-display-name-inner{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.choose-username-false-input{
+	border: 2px solid var(--primary-1);
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	margin: 1em;
+}
+.choose-username-false-input-left{
+	color: var(--primary-1);
+	font-weight: bold;
+	padding-left: .75em;
+	user-select: none;
+	margin-right: .5ch;
+}
+.choose-username-input[type="text"], .choose-display-name-input[type="text"]{
+	background: none;
+	color: var(--primary-1);
+	font-weight: bold;
+}
+.choose-username-input[type="text"]{
+	border: none;
+	padding-left: 0;
+	margin-bottom: 0em !important;
+}
+.choose-display-name-input[type="text"]{
+	border: 2px solid var(--primary-1);
+	margin: 1em !important;
+}
+.choose-username-input::placeholder, .choose-display-name-input::placeholder{
+	color: var(--primary-1);
+}
 
 /* Bio */
 .choose-bio-input{
 	min-width: 35ch;
 	max-width: 35ch;
+	min-height: 100px;
+}
+.choose-bio-outer{
+	display: flex;
+	justify-content: center;
 }

@@ -14,10 +14,9 @@ class Setup extends Component {
 
     render() {
         return (
-        	<div>
+        	<div className="setup-outer">
 	            <Switch>
 	            	<Route path="/app/setup/student-tutor-select">
-	            		<div>eeee</div>
 	            		<StudentTutorSelect user={this.props.user}/>
 	            	</Route>
 	            	<Route path="/app/setup/username">

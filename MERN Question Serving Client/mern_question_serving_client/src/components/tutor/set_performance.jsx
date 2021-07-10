@@ -7,7 +7,7 @@ class SetPerformance extends Component {
     }
 
     completeSort = (student_a, student_b) => {
-        return new Date(a.completeDate ? a.completeDate : '2500-07-20') - new Date(b.completeDate ? b.completeDate : '2500-07-20')
+        return new Date(student_a.completeDate ? student_a.completeDate : '2500-07-20') - new Date(student_b.completeDate ? student_b.completeDate : '2500-07-20')
     }
 
     render() {

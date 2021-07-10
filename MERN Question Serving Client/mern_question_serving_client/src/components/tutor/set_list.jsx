@@ -82,7 +82,7 @@ class SetList extends Component {
 
     render() {
         return (
-            <div>
+            <div className="set-list-outer">
                 <div className="set-list-header-cont">
                     <h2>Sets</h2>
                     <IoAddCircle className="set-list-header-plus" onClick={() => this.controlCreateSetPopup(true) }/>

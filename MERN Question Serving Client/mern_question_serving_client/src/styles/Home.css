@@ -1,11 +1,12 @@
-.home-outer{
+.home-flex{
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
+	min-height: calc(100vh - var(--footer-height) - 7px);
 }
 .home-center{
 	text-align: center;
+	padding: 1em;
 }
 .home-center p{
 	max-width: 40ch;

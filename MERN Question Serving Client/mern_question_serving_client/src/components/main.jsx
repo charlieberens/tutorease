@@ -54,7 +54,6 @@ class Main extends Component {
 	            <div>
 		            <nav>
 		            	<div className="nav-left">
-							<Link to="/">Home</Link>
 							{this.state.user.tutor && <Link to="/app/tutor">Tutor</Link>}
 							{this.state.user.student && <Link to="/app/student">Student</Link>}
 							<a href="/auth/logout">Log Out</a>

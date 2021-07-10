@@ -9,10 +9,12 @@
   --purple-60: hsl(255, 95%, 60%);
   --purple-55: hsl(255, 95%, 55%);
 
+  --green-40:  hsl(120, 33%, 40%);
   --green-50:  hsl(120, 33%, 50%);
   --green-60:  hsl(120, 33%, 60%);
   --green-90:  hsl(120, 33%, 90%);
 
+  --red-40: hsl(359, 87%, 40%);
   --red-50: hsl(359, 87%, 50%);
   --red-60: hsl(359, 87%, 60%);
   --red-90: hsl(359, 87%, 90%);
@@ -187,7 +189,8 @@ input[type=text]{
 /* Popups */
 .popup-cont{
   display: grid;
-  align-content: center;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -208,12 +211,13 @@ input[type=text]{
   background: white;
   border-radius: 5px;
   padding: 2rem;
-  max-width: 100%;
+  max-width: 400px;
   position: relative;
   display: grid;
   align-content: center;
   margin: auto;
   text-align: left;
+  margin: 1em;
 }
 .popup h2{
   margin-bottom: .5em;
@@ -291,8 +295,69 @@ nav{
 /* Feedback, About, LaTeX, etc */
 .read-page{
   min-height: calc(100vh - var(--footer-height) - 7px);
+  padding: 8em 2em;
+}
+.read-page .back-link{
+  margin-bottom: 1em;
 }
 .read-page-inner{
   max-width: 50ch;
   width: 100%;
+}
+.LaTeX-section{
+  padding: 1.5em;
+  border-radius: 5px;
+  background: var(--grey-95);
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+.LaTeX-section .math-block{
+  margin: .5em 0;
+}
+.LaTeX-section-LaTeXed{
+  background: var(--primary-1);
+  color: white;
+}
+.LaTeX-section p{
+  margin-bottom: 0;
+  text-align: left;
+}
+.LaTeX-becomes{
+  text-align: center;
+}
+.feedback-email{
+  text-align: center;
+}
+
+@media screen and (max-width:  550px){
+  .footer{
+    flex-flow: column;
+    align-items: center;
+  }
+  .footer-right{
+    margin-top: 1em;
+    padding: 1em 2em 0;
+    border-top: 1px solid var(--grey-80);
+    display: flex;
+    justify-items: center;
+  }
+  .footer-left{
+    text-align: center;
+  }
+}
+@media screen and (max-width:  450px){
+  .nav-left a{
+    font-size: 85%;
+  }
+    .feedback-email{
+    font-size: 1em;
+  }
+}
+@media screen and (max-width:  350px){
+  .nav-left a{
+    font-size: 75%;
+  }
 }

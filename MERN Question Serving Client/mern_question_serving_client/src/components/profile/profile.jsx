@@ -13,7 +13,8 @@ class Profile extends Component {
 	    this.state = {
 	    	loading: true,
             err: null,
-            isCurrentUser: false
+            isCurrentUser: false,
+            currentUserTutor: false
 	    }
     }
 
@@ -51,7 +52,8 @@ class Profile extends Component {
                     pendingStudent: res.data.pendingStudent,
                     currentStudent: res.data.currentStudent,
                     username: this.props.match.params.username
-    			}
+    			},
+                currentUserTutor: res.data.currentUserTutor
     		})
         }else{
             this.setState({err: res.data.err})
@@ -107,7 +109,7 @@ class Profile extends Component {
                         <div className="profile-bio">
                             <p className="linkify"><Linkify>{this.state.user.bio ? this.state.user.bio : <><em>{this.state.user.displayName} is bioless. This is truly unfortunate</em> 🙁</>}</Linkify></p>
                         </div>
-                        {this.state.user.student &&
+                        {this.state.user.student && this.state.currentUserTutor &&
                             <div className="profile-bottom">
                                 {this.state.user.pendingStudent ? 
                                     <em>{this.state.user.displayName} hasn't accepted your request yet</em>

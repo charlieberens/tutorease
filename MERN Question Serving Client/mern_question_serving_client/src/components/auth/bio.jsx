@@ -7,7 +7,8 @@ class Bio extends Component {
         super(props);
 
         this.state = {
-        	value: ''
+        	value: '',
+        	err: null
         }
     }
 
@@ -37,16 +38,17 @@ class Bio extends Component {
 
     render() {
         return (
-            <div className="choose-bio-outer">
-				<h1 className="choose-bio-header">Write yourself a bio</h1>
-				<form className="choose-bio-inner" onSubmit={this.onSubmit}>
-					<div className="choose-bio-input-error-cont">
-						<textarea className="choose-bio-input" type="text" name="username" placeholder="Username" value={this.state.value} onChange={this.onChange} maxlength="512"/>
-						<span className="err">{this.state.err}</span>
-					</div>
-					<input className="choose-bio-submit" type="submit"/>
-				</form>
-			</div>
+            <form className="choose-bio-outer setup-section-outer" onSubmit={this.onSubmit}>
+            	<div className="setup-header-err-cont">
+					<h1 className="choose-bio-header">Write yourself a bio</h1>
+					<span className="err">{this.state.err}</span>
+            	</div>
+				<div className="choose-bio-input-error-cont">
+					<textarea className="choose-bio-input" type="text" name="bio" placeholder="Bio" value={this.state.value} onChange={this.onChange} maxlength="512"/>
+					<span className="err">{this.state.err}</span>
+				</div>
+				<input className="choose-bio-submit button-a" type="submit"/>
+			</form>
         );
     }
 }

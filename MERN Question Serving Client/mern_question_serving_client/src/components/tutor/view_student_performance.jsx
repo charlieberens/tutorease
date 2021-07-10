@@ -36,9 +36,6 @@ class ViewStudentPerformance extends Component {
     	if(this.state.authorized){
 	        return (
                 <Switch>
-                    <Route path="/profile/:student_username/performance/:set_id">
-                        <ReviewPerformance/>
-                    </Route>
                     <Route path="/profile/:student_username/performance">
                         <Back className="top-left"/>
                         {this.state.sets.length ?
@@ -57,7 +54,7 @@ class ViewStudentPerformance extends Component {
                                                     <span>{set.numCorrect}</span> out of <span>{set.setLength}</span>
                                                 </div>
                                                 <div className="set-performance-student-right-bottom">
-                                                    <Link className="grey-a" to={`/app/profile/${this.props.match.params.student_username}/performance/${set.id}`}>Details</Link>
+                                                    <Link className="grey-a" to={`/app/tutor/sets/${set.id}/performance/${this.props.match.params.student_username}`}>Details</Link>
                                                 </div>
                                             </div>
                                             :
