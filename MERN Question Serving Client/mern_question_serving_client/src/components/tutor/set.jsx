@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter, Link, Route, Switch } from 'react-router-dom'
 import axios from 'axios';
-import Popup from '../popup';
+import Popup from 'components/popup';
 import QuestionPopup from './question_popup'
 import CreateQuestion from './create_question';
 import DeleteQuestion from './delete_question';
@@ -10,7 +10,7 @@ import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
 import SetQuestions from './set_questions'
 import SetPerformance from './set_performance'
 import ReviewPerformance from './review_performance'
-import Back from '../back';
+import Back from 'components/back';
 
 class Set extends Component {
     constructor(props) {

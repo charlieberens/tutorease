@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 import {match, withRouter} from 'react-router-dom';
 import SetGame from './set_game';
-import Back from '../back';
+import Back from 'components/back';
 
 class SetController extends Component {
     constructor(props) {

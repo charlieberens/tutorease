@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 import { withRouter, Link } from 'react-router-dom';
 import * as dayjs from 'dayjs';
-import '../../styles/Profile.css'
+import 'styles/Profile.css'
 import { IoPencil } from "react-icons/io5";
 import Linkify from 'react-linkify';
 

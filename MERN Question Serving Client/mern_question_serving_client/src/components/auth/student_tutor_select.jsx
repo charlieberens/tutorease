@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import {IoSchool, IoSchoolOutline, IoBook, IoBookOutline} from 'react-icons/io5';
 import axios from 'axios';
 
-import '../../styles/Auth.css'
+import 'styles/Auth.css'
 
 import { withRouter } from "react-router-dom";
 

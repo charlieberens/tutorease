@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter, Link, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import ReviewPerformance from './review_performance';
-import Back from '../back';
+import Back from '/components/back';
 
 class ViewStudentPerformance extends Component {
     constructor(props) {

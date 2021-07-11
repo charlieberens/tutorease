@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Route, Switch, Redirect, Link } from 'react-router-dom';
-import ViewStudentPerformance from '../tutor/view_student_performance'
+import ViewStudentPerformance from 'components/tutor/view_student_performance'
 import Profile from './profile'
-import Page404 from '../page_404'
-import Footer from '../footer'
-import Back from '../back'
+import Page404 from 'components/page_404'
+import Footer from 'components/footer'
+import Back from 'components/back'
 
 class ProfileControler extends Component {
     constructor(props) {

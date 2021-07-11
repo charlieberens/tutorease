@@ -4,7 +4,7 @@ import MathTextarea from './math_textarea.jsx'
 import { IoClose, IoAddCircle } from "react-icons/io5";
 import axios from 'axios';
 import Latex from 'react-latex';
-import RenderQuestionBody from '../render_question_body';
+import RenderQuestionBody from 'components/render_question_body';
 import { withRouter, Link } from 'react-router-dom';
 
 const maxAnswers = 8;

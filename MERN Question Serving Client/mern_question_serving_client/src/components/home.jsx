@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import {Link} from "react-router-dom";
-import '../styles/home.css'
+import 'styles/home.css'
 import Footer from './footer';
 
 class Home extends Component {

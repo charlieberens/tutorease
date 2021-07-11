@@ -5,7 +5,7 @@ import axios from 'axios';
 import SetListPopup from './set_list_popup'
 import CreateSet from './create_set'
 import DeleteSet from './delete_set'
-import Popup from '../popup'
+import Popup from 'components/popup'
 import * as dayjs from 'dayjs'
 
 import {

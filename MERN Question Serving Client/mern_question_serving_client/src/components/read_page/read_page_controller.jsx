@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import LatexPage from './latex_page';
 import Feedback from './feedback';
-import Footer from '../footer';
-import About from './about'
+import Footer from 'components/footer';
+import About from 'components/about'
 import { Route, Switch } from 'react-router-dom';
-import Back from '../back'
+import Back from 'components/back'
 
 class ReadPageController extends Component {
     constructor(props) {

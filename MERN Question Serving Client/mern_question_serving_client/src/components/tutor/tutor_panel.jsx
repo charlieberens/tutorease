@@ -9,13 +9,13 @@ import {
 import React, { Component, PropTypes } from 'react';
 import CreateQuestion from './create_question'
 import CreateSet from './create_set'
-import Popup from '../popup'
+import Popup from 'components/popup'
 import SetList from './set_list'
 import StudentList from './student_list'
 import Set from './set'
 import AddStudent from './add_student'
 import AssignSet from './assign_set'
-import '../../styles/TutorPanel.css'
+import 'styles/TutorPanel.css'
 import axios from 'axios'
 const base_path = '/app/tutor'
 

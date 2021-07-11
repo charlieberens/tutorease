@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Latex from 'react-latex';
-import RenderQuestionBody from '../render_question_body';
+import RenderQuestionBody from 'components/render_question_body';
 
 class ReviewPerformance extends Component {
     constructor(props) {
