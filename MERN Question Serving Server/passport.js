@@ -1,4 +1,3 @@
-const keys = require('./config/keys')
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./models/User');
@@ -12,10 +11,12 @@ passport.deserializeUser(function(id, done) {
     done(null, id);
 });
 
+console.log("process.env", process.env)
+
 passport.use(
     new GoogleStrategy({
-        clientID: keys.google.clientID,
-        clientSecret: keys.google.clientSecret,
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: '/auth/google/callback'
     },
     function(accessToken, refreshToken, profile, cb) {
