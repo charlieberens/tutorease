@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
-import RenderQuestionBody from 'components/render_question_body';
+import RenderQuestionBody from '../render_question_body';
 import Latex from 'react-latex';
 
 const alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']

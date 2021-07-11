@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'styles/StudentPanel.css'
+import '../../styles/StudentPanel.css'
 import TutorList from './tutor_list';
 import StudentSets from './student_sets';
 

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {FcGoogle} from "react-icons/fc";
-import Back from "components/back";
+import Back from "../back";
 import axios from 'axios';
-import 'styles/auth.css'
+import '../../styles/auth.css'
 
 import { withRouter } from 'react-router-dom';
 

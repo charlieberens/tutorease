@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import axios from 'axios';
 import { IoCheckmark, IoClose } from "react-icons/io5";
 import ConfirmAcceptTutor from './confirm_accept_tutor'
-import Popup from 'components/popup'
+import Popup from '../popup'
 import {Link} from 'react-router-dom';
 
 class TutorList extends Component {

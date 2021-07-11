@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'styles/latex.css';
+import '../../styles/latex.css';
 import Latex from 'react-latex';
 
 class MathTextarea extends Component {

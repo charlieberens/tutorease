@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter, Switch, Route, Link } from 'react-router-dom'
 import axios from 'axios';
-import Popup from 'components/popup';
+import Popup from '../popup';
 import QuestionPopup from './question_popup'
 import CreateQuestion from './create_question';
 import DeleteQuestion from './delete_question';
 import AssignSet from './assign_set'
 import { IoEllipsisVertical, IoAddCircle } from "react-icons/io5";
 import Latex from 'react-latex';
-import RenderQuestionBody from 'components/render_question_body';
+import RenderQuestionBody from '../render_question_body';
 
 class SetQuestions extends Component {
     constructor(props) {
