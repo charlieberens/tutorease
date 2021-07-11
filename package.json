@@ -3,9 +3,16 @@
   "version": "0.1.0",
   "description": "Easily assign questions to students",
   "main": "app.js",
+  "engines": {
+    "node": "^14.17.0"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
   "author": {
     "name": "Charlie Berens",
-    "email": "charliejberens@gmail.com"
+    "email": "charliejberens@gmail.com",
+    "url": "charlieberens.org"
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -211,11 +218,5 @@
     "wrappy": "^1.0.2",
     "write-file-atomic": "^3.0.3",
     "xdg-basedir": "^4.0.0"
-<<<<<<< HEAD
-=======
-  },
-  "scripts": {
-    "start": "node app.js"
->>>>>>> dev
   }
 }
