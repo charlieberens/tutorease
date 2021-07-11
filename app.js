@@ -6,7 +6,7 @@ const connectDB = require('./MERN Question Serving Server/config/connect_db');
 const cors = require('cors')
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const keys = require('./MERN Question Serving Server/config/keys')
+// const keys = require('./MERN Question Serving Server/config/keys')
 require('./MERN Question Serving Server/passport');
 
 const app = express();
@@ -16,7 +16,7 @@ connectDB(); //Connects to the database using the connect_db.js folder
 // Passport Config
 app.use(cookieSession({
   name: 'session-name',
-  keys: keys.session.secrets
+  keys: [process.env.SECRET]
 }))
 
 app.use(cors());
