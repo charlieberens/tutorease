@@ -24,6 +24,11 @@ app.use(cors());
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get('/', (req,res) =>{
+    // res.sendFile(path.join(__dirname, './MERN Question Serving Client/mern_question_serving_client/build/index.html'));
+    res.send('You did it bitch!')
+});
+
 // Triggers this JSON reading package on all posts
 app.use(bodyParser.json());
 
@@ -44,10 +49,6 @@ app.use('/auth', authRoute);
 
 // Temporary base url
 // app.get('/', (req, res) => res.send('Yo efe'));
-app.get('/*', (req,res) =>{
-    // res.sendFile(path.join(__dirname, './MERN Question Serving Client/mern_question_serving_client/build/index.html'));
-    res.send('You did it bitch!')
-});
 
 const port = 3000;
 
