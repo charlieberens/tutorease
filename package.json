@@ -211,5 +211,11 @@
     "wrappy": "^1.0.2",
     "write-file-atomic": "^3.0.3",
     "xdg-basedir": "^4.0.0"
+<<<<<<< HEAD
+=======
+  },
+  "scripts": {
+    "start": "node app.js"
+>>>>>>> dev
   }
 }
