@@ -22,11 +22,4 @@ router.get("/logout", (req,res) => {
 	res.redirect('/');
 });
 
-
-// // const express = require('express');
-// // const router = express.Router();
-
-// // const mongoose = require('mongoose');
-// // const bodyParser = require('body-parser');
-
 module.exports = router;
