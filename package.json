@@ -133,7 +133,7 @@
     "mongodb": "^3.6.8",
     "mongoose": "^5.12.12",
     "mongoose-legacy-pluralize": "^1.0.2",
-    "mpath": "^0.8.3",
+    "mpath": "^0.8.4",
     "mquery": "^3.2.5",
     "ms": "^2.0.0",
     "negotiator": "^0.6.2",
