@@ -1,14 +1,14 @@
 # Question Serving
+
 _A tool to help independent educators deliver tests and practice questions to students._
 
-As the name implies this project is built with
-- **M**ongoDB
-- **E**xpress
-- **R**eact
-- **N**ode Js
+This project is built with
 
-Prior to this project I was fluent in Javascript but a complete newcomer to Mongo, Express, React, and Node. I mainly worked with Vue and Flask for backend. 
+-   **M**ongoDB
+-   **E**xpress
+-   **R**eact
+-   **N**ode Js
 
-This is primarily a project for me to learn new technologies, but it also solves fufills a need I have as a tutor.
+Prior to this project I was fluent in Javascript but a complete newcomer to Mongo, Express, React, and Node. I mainly worked with Vue for frontend and Flask for backend.
 
-Teachers/Tutors can create problems and assign them to their students. Simple as that.
+I primarily embarked on this project to learn new technologies, but it also fufills a need I have as a tutor.
