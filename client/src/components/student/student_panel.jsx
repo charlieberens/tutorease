@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/StudentPanel.css";
+import "../../styles/studentpanel.css";
 import TutorList from "./tutor_list";
 import StudentSets from "./student_sets";
 

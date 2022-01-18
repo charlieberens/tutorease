@@ -1,4 +1,4 @@
-import "./styles/App.css";
+import "./styles/app.css";
 import { Component } from "react";
 import Main from "./components/main";
 import Home from "./components/home";
