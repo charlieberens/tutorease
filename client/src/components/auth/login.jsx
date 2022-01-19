@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { FcGoogle } from "react-icons/fc";
 import Back from "../back";
 import axios from "axios";
-import "../../styles/auth.css";
+import "./../../styles/auth.css";
 
 import { withRouter } from "react-router-dom";
 
