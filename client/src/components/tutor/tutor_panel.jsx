@@ -6,7 +6,7 @@ import StudentList from "./student_list";
 import Set from "./set";
 import AddStudent from "./add_student";
 import AssignSet from "./assign_set";
-import "../../styles/tutorpanel.css";
+import "./../../styles/tutorpanel.css";
 import axios from "axios";
 const base_path = "/app/tutor";
 

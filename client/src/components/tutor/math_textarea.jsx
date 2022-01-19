@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../styles/latex.css";
+import "./../../styles/latex.css";
 
 class MathTextarea extends Component {
     constructor(props) {

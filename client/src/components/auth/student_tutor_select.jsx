@@ -7,7 +7,7 @@ import {
 } from "react-icons/io5";
 import axios from "axios";
 
-import "../../styles/auth.css";
+import "./../../styles/auth.css";
 
 import { withRouter } from "react-router-dom";
 
