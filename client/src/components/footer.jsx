@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 
 class Footer extends Component {
     componentDidMount() {
-        console.log("ee");
         try {
             document.documentElement.style.setProperty(
                 "--footer-height",

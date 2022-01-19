@@ -16,7 +16,7 @@ class ProfileControler extends Component {
                             <ViewStudentPerformance />
                         </Route>
                         <Route path="/profile/:username">
-                            <Back className="top-left" />
+                            <Back to="/app" className="top-left" />
                             <Profile
                                 current_username={this.props.current_username}
                             />

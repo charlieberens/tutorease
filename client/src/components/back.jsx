@@ -5,9 +5,16 @@ import { withRouter } from "react-router-dom";
 class Back extends Component {
     clickHandler = () => {
         if (this.props.to) {
-            window.location.replace(this.props.to);
-        } else {
+            this.props.history.push(this.props.to);
+        } else if (this.props.goGack) {
             this.props.history.goBack();
+        } else {
+            let url = window.location.pathname;
+            if (url[url.length - 1] === "/") {
+                url = url.slice(0, -1);
+            }
+            let new_url = url.slice(0, url.lastIndexOf("/"));
+            this.props.history.push(new_url);
         }
     };
 

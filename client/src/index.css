@@ -188,7 +188,7 @@ input[type="text"] {
     margin-bottom: 1em;
 }
 .back-link {
-    opacity: 0.5;
+    opacity: 0.75;
     display: inline-flex;
     align-items: center;
 }
